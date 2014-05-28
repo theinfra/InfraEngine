@@ -1,0 +1,297 @@
+body
+{
+	margin:0;
+	padding:0;
+	background: #fff url('images/BodyBg.gif') repeat-x 0 0;
+}
+
+#Container {
+
+}
+.Clear {
+	clear: both;
+}
+
+.WideContent div{
+ 	display: block;
+	margin-left: auto;
+	margin-right: auto;	
+}
+
+#LoginFormContainer {
+	padding: 20% 40%;
+}
+
+#LoginFormSubmit {
+	margin-left: auto;
+	margin-right: auto;
+	width: 80%;
+}
+
+.Header {
+	width: 700px;
+	height: 70px;
+	padding-top: 20px;
+}
+
+.HeaderLogo {
+	float: left;
+}
+
+.HeaderLogo img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.HeaderExchangeRates {
+	margin-left: 10px !important;
+	float: left;
+	border-color: #dbdbde;
+	background-color: #F5F5F5;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 4px;
+	padding: 1px;
+}
+
+.HeaderExchangeRates ul {
+	list-style: none;
+	position: relative;
+	margin: 0;
+	padding: 0;	
+}
+
+#HeaderUserMenu {
+	float: right;
+}
+
+.HeaderMenu li {
+	list-style: none;
+	float: left;
+	position: relative;
+	margin: 0;
+	padding: 0;
+}
+
+.HeaderMenu li a {
+	background-color: #140EC9;
+	border-left: 1px solid #191919;
+	border-right: 1px solid rgba(255, 255, 255, 0.05);
+	color: #EEE;
+	display: block;
+	font-size: 13px;
+	line-height: 42px;
+	padding: 0 14px;
+	text-decoration: none;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+	text-transform: uppercase;
+} 
+
+.HeaderMenu {
+	width: 700px;
+}
+
+.HeaderFlashMessages {
+	width: 500px;
+	background-color: #FFF;
+	margin-top: 10px;
+}
+
+.HeaderFlashMessages div {
+	margin-top: 5px;
+}
+
+.HeaderFlashMessages p {
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.SuccessHeaderFlashMessage {
+	background: #89F590 url('images/log_severity1.gif') no-repeat;
+}
+
+.ErrorHeaderFlashMessage {
+	background: #F59667 url('images/log_severity4.gif') no-repeat;
+}
+
+.WarningHeaderFlashMessage {
+	background: #E6ED1C url('images/log_severity3.gif') no-repeat;
+}
+
+.NoticeHeaderFlashMessage {
+	background: #79C2ED url('images/log_severity2.gif') no-repeat;
+}
+
+.DebugHeaderFlashMessage {
+	background: #E637E0 url('images/log_severity5.gif') no-repeat;
+}
+
+.ProductsTable {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.ProductsTable th {
+	border-bottom: 1px dotted black !important;
+}
+
+.ProductsTable tr {
+	height: 27px;
+}
+
+.ProductsTable td {
+	padding: 0;
+	border-left: 1px solid #949494;
+}
+
+.HeaderLeftBound {
+	border-left: 2px solid black !important;
+}
+
+.UsersPanel {
+	width: 810px;
+	background: transparent url('images/ContentBg800.gif') no-repeat;
+}
+
+.UsersTable {
+	width: 100%;
+}
+
+tr.Odd {
+	background-color: #E3E3E3;
+}
+
+tr.Even {
+	background-color: #FFF;
+}
+
+td.FormLabel {
+	text-align: right;
+}
+
+.ProductsPanel {
+	margin: 10px !important;
+	float: left;
+	border-color: #dbdbde;
+	background-color: #FFFFFF;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 4px;
+	padding: 1px;
+}
+
+.ProductCreate {
+	width: 975px;
+	background: transparent url('images/ContentBg975.gif') no-repeat;
+}
+
+.ProductEdit {
+	width: 975px;
+	background: transparent url('images/ContentBg975.gif') no-repeat;
+}
+
+.UserCreate {
+	width: 975px;
+	background: transparent url('images/ContentBg975.gif') no-repeat;
+}
+
+.UserCreate {
+	width: 975px;
+	background: transparent url('images/ContentBg975.gif') no-repeat;
+}
+
+.UserEdit {
+	width: 975px;
+	background: transparent url('images/ContentBg975.gif') no-repeat;
+}
+
+.CreateCurrencyForm {
+	width: 975px;
+	background: transparent url('images/ContentBg975.gif') no-repeat;
+}
+
+.CreateProductStatusForm {
+	width: 975px;
+	background: transparent url('images/ContentBg975.gif') no-repeat;
+}
+
+.ConfirmMessage {
+	width: 975px;
+	background: transparent url('images/ContentBg975.gif') no-repeat;
+}
+
+.PriceHeader {
+	width: 20px;
+}
+
+.PriceHeaderCompare {
+	width: 30px !important;
+}
+
+.ActionsPanel {
+	
+}
+
+.ActionsPanel li {
+	list-style: none;
+	position: relative;
+	margin: 0;
+	padding: 0;
+}
+
+.SettingsForm {
+	width: 975px;
+	background: transparent url('images/ContentBg975.gif') no-repeat;
+}
+
+.CurrenciesTable table {
+	width: 975px;
+}
+
+ul#ListPriceCompareRoot {margin: 0 0 0 200px;}
+ul.ListPriceCompare a { display:block; color: #fff; font-family: Verdana; font-size: 14px; text-decoration: none;}
+ul.ListPriceCompare, ul.ListPriceCompare li, ul.ListPriceCompare ul { list-style: none; margin: 0; padding: 0; }
+li.ListPriceCompareRoot { background: #555; color: #fff;}
+li.ListItemPriceCompareGreater { background: #FF0000; color: #000;}
+li.ListItemPriceCompareEqual { background: #FFFF00; color: #000;}
+li.ListItemPriceCompareLesser { background: #00FF00; color: #000;}
+li.ListPriceCompareLower { background: #FF0000; color: #000;}
+ul.ListPriceCompare { position: relative; float: left; }
+ul.ListPriceCompare li { float: left; line-height: 1.3em; vertical-align: middle; zoom: 1; padding: 1px 10px; }
+ul.ListPriceCompare li.hover, ul.ListPriceCompare li:hover { position: relative; z-index: 599; cursor: default; }
+/* El top y left de esta controla la posicion de las ul que se despliegan */
+ul.ListPriceCompare ul { visibility: hidden; position: absolute; top: 0px; left: 100%; z-index: 598; width: 195px; background: #555; border: 1px solid #fff; }
+ul.ListPriceCompare ul li { float: none; }
+ul.ListPriceCompare ul ul { top: -2px; left: 100%; }
+ul.ListPriceCompare li:hover > ul { visibility: visible }
+
+.ProductRowInlineLeft {
+	float: left;
+	width: 50%;
+}
+
+.ProductRowInlineRight {
+	float: left;
+	width: 50%;
+}
+
+.ProductRowInlineBottom {
+	float: left;
+	width: 100%;
+}
+
+.icon-spinner {
+	background: transparent url('images/ajax-loader.gif') no-repeat;
+	width: 16px;
+	margin-top: 80px;
+}
+
+.ProductsPaging li {
+	list-style: none;
+	float: left;
+	position: relative;
+	margin: 0;
+	padding: 5px;
+}

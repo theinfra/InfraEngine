@@ -1,0 +1,1 @@
+<li><a href="%%GLOBAL_AppPath%%/product/?page=%%GLOBAL_PageNumber%%&perpage=%%GLOBAL_PerPageNumber%%">%%GLOBAL_PageText%%</a></li>
