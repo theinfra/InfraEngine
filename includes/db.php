@@ -113,8 +113,6 @@ class Db {
 			$this->SetError('No valid connection');
 			return false;
 		}
-	
-		$this->NumQueries++;
 		
 		if (!$this->_unbuffered_query) {
 			$result = mysql_query($query, $this->connection);
