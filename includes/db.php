@@ -620,4 +620,62 @@ class Db {
 		}
 		return $value;
 	}
+	
+	function tableExists($table){
+		$result = $this->Query('SELECT 1 FROM '.$table);
+		if($result){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	function CreateTableForEntity($entityname){
+		$entity = getEntity($entityname);
+		if(!$entity){
+			return false;
+		}
+		
+		$tablename = $entity->getTableName();
+		$tablefields = $entity->getSchema();
+		$tableprimarykey = $entity->getPrimaryKeyName();
+		$query = 'CREATE TABLE IF NOT EXISTS `'.$tablename.'` (';
+		
+		foreach($tablefields as $field => $definition){
+			$query .= "\t`".$field."` ";
+			$query .= $definition['type'];
+			$query .= '('.$definition['size'].')';
+			
+			if(isset($definition['null']) && $definition['null']){
+				$query .= ' NULL';
+			}
+			else {
+				$query .= ' NOT NULL';
+			}
+			
+			if(isset($definition['auto_increment']) && $definition['auto_increment']){
+				$query .= ' AUTO_INCREMENT';
+			}
+			
+			$query .= ','.PHP_EOL;
+		}
+		
+		$query .= "\tPRIMARY KEY (`";
+		$query .= implode('`, `', $tableprimarykey);
+		$query .= "`)".PHP_EOL;
+		
+		$query .= ')'.PHP_EOL;
+		if($entity->getUseTransactions()){
+			$query .= 'ENGINE=InnoDB';
+		}
+		else {
+			$query .= 'ENGINE=MyISAM';
+		}
+
+		$query .= 'CHARSET=utf8 COLLATE utf8_general_ci'.PHP_EOL;
+		
+		print $query.APP_EOL;
+		return true;
+	}
 }
