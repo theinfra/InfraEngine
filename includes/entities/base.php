@@ -1,14 +1,11 @@
 <?php
 
-class ISC_ENTITY_BASE
+class APPENTITYBASE
 {
 	const logError = false;
 
-	/** @var Db hacking in a shortcut to $GLOBALS['ISC_CLASS_DB'] for entites since it's unlikely to change during script execution */
+	/** @var Db hacking in a shortcut to $GLOBALS['APP_CLASS_DB'] for entites since it's unlikely to change during script execution */
 	protected $db;
-
-	/** @var ISC_LOG */
-	protected $log;
 
 	protected $error;
 	protected $schema;
@@ -28,17 +25,17 @@ class ISC_ENTITY_BASE
 	 */
 	public function __construct($schema=array(), $tableName="", $primaryKeyName="", $searchFields=array(), $customKeyName="")
 	{
-		$this->db = $GLOBALS['ISC_CLASS_DB'];
-		$this->log = GetClass('ISC_LOG');
+		$this->db = $GLOBALS['APP_CLASS_DB'];
 
 		$this->schema = $schema;
+		// ALWAYS MAKE THIS EQUAL TO THE ENTITY NAME IN SINGULAR
 		$this->tableName = $tableName;
 		$this->primaryKeyName = $primaryKeyName;
 		$this->searchFields = $searchFields;
 		$this->customKeyName = $customKeyName;
 
 		$this->error = "";
-		$this->useTransactions = false;
+		$this->useTransactions = true;
 		$this->allowedSQLFunctions = array(
 				'LOWER',
 				'UPPER',
@@ -70,10 +67,6 @@ class ISC_ENTITY_BASE
 	 */
 	protected function setError($error)
 	{
-		if (self::logError) {
-			$GLOBALS["ISC_CLASS_LOG"]->LogSystemError("general", $error);
-		}
-
 		$this->error = $error;
 	}
 
@@ -121,7 +114,7 @@ class ISC_ENTITY_BASE
 						return false;
 					}
 
-					$whereClause[] = $column . " = '" . $GLOBALS["ISC_CLASS_DB"]->Quote($value) . "'";
+					$whereClause[] = $column . " = '" . $GLOBALS["APP_CLASS_DB"]->Quote($value) . "'";
 				}
 			}
 
@@ -154,7 +147,7 @@ class ISC_ENTITY_BASE
 				continue;
 			}
 
-			switch (isc_strtolower($this->schema[$column])) {
+			switch (app_strtolower($this->schema[$column])) {
 				case "text":
 					$value = (string)$value;
 					break;
@@ -217,11 +210,11 @@ class ISC_ENTITY_BASE
 		 * Get the record. No need for a prehook as we have nothing to fo beforehand
 		 */
 		$query = "SELECT *
-					FROM [|PREFIX|]" . $this->tableName . "
+					FROM " . $this->tableName . "
 					WHERE " . $whereClause;
 
-		$result = $GLOBALS["ISC_CLASS_DB"]->Query($query);
-		$node = $GLOBALS["ISC_CLASS_DB"]->Fetch($result);
+		$result = $GLOBALS["APP_CLASS_DB"]->Query($query);
+		$node = $GLOBALS["APP_CLASS_DB"]->Fetch($result);
 
 		if (!is_array($node)) {
 			return false;
@@ -260,7 +253,7 @@ class ISC_ENTITY_BASE
 		}
 
 		if ($this->useTransactions) {
-			$GLOBALS["ISC_CLASS_DB"]->StartTransaction();
+			$GLOBALS["APP_CLASS_DB"]->StartTransaction();
 		}
 
 		/**
@@ -269,7 +262,7 @@ class ISC_ENTITY_BASE
 		 */
 		if (method_exists($this, "addPrehook") && $this->addPrehook($savedata, $input) === false) {
 			if ($this->useTransactions) {
-				$GLOBALS["ISC_CLASS_DB"]->RollbackTransaction();
+				$GLOBALS["APP_CLASS_DB"]->RollbackTransaction();
 			}
 
 			return false;
@@ -278,14 +271,14 @@ class ISC_ENTITY_BASE
 		/**
 		 * Do the insert
 		 */
-		$nodeId = $GLOBALS["ISC_CLASS_DB"]->InsertQuery($this->tableName, $savedata);
+		$nodeId = $GLOBALS["APP_CLASS_DB"]->InsertQuery($this->tableName, $savedata);
 
 		if ($nodeId === false) {
-			$error = $GLOBALS["ISC_CLASS_DB"]->Error();
+			$error = $GLOBALS["APP_CLASS_DB"]->Error();
 			$this->setError($error);
 
 			if ($this->useTransactions) {
-				$GLOBALS["ISC_CLASS_DB"]->RollbackTransaction();
+				$GLOBALS["APP_CLASS_DB"]->RollbackTransaction();
 			}
 
 			return false;
@@ -296,14 +289,14 @@ class ISC_ENTITY_BASE
 		 */
 		if (method_exists($this, "addPosthook") && $this->addPosthook($nodeId, $savedata, $input) === false) {
 			if ($this->useTransactions) {
-				$GLOBALS["ISC_CLASS_DB"]->RollbackTransaction();
+				$GLOBALS["APP_CLASS_DB"]->RollbackTransaction();
 			}
 
 			return false;
 		}
 
 		if ($this->useTransactions) {
-			$GLOBALS["ISC_CLASS_DB"]->CommitTransaction();
+			$GLOBALS["APP_CLASS_DB"]->CommitTransaction();
 		}
 
 		return $nodeId;
@@ -338,7 +331,7 @@ class ISC_ENTITY_BASE
 		}
 
 		if ($this->useTransactions) {
-			$GLOBALS["ISC_CLASS_DB"]->StartTransaction();
+			$GLOBALS["APP_CLASS_DB"]->StartTransaction();
 		}
 
 		/**
@@ -347,7 +340,7 @@ class ISC_ENTITY_BASE
 		 */
 		if (method_exists($this, "editPrehook") && $this->editPrehook($nodeId, $savedata, $input) === false) {
 			if ($this->useTransactions) {
-				$GLOBALS["ISC_CLASS_DB"]->RollbackTransaction();
+				$GLOBALS["APP_CLASS_DB"]->RollbackTransaction();
 			}
 
 			return false;
@@ -356,14 +349,14 @@ class ISC_ENTITY_BASE
 		/**
 		 * Do the update
 		 */
-		$rtn = $GLOBALS["ISC_CLASS_DB"]->UpdateQuery($this->tableName, $savedata, $whereClause);
+		$rtn = $GLOBALS["APP_CLASS_DB"]->UpdateQuery($this->tableName, $savedata, $whereClause);
 
 		if ($rtn === false) {
-			$error = $GLOBALS["ISC_CLASS_DB"]->Error();
+			$error = $GLOBALS["APP_CLASS_DB"]->Error();
 			$this->setError($error);
 
 			if ($this->useTransactions) {
-				$GLOBALS["ISC_CLASS_DB"]->RollbackTransaction();
+				$GLOBALS["APP_CLASS_DB"]->RollbackTransaction();
 			}
 
 			return false;
@@ -374,14 +367,14 @@ class ISC_ENTITY_BASE
 		 */
 		if (method_exists($this, "editPosthook") && $this->editPosthook($nodeId, $savedata, $input) === false) {
 			if ($this->useTransactions) {
-				$GLOBALS["ISC_CLASS_DB"]->RollbackTransaction();
+				$GLOBALS["APP_CLASS_DB"]->RollbackTransaction();
 			}
 
 			return false;
 		}
 
 		if ($this->useTransactions) {
-			$GLOBALS["ISC_CLASS_DB"]->CommitTransaction();
+			$GLOBALS["APP_CLASS_DB"]->CommitTransaction();
 		}
 
 		return $nodeId;
@@ -416,7 +409,7 @@ class ISC_ENTITY_BASE
 		}
 
 		if ($this->useTransactions) {
-			$GLOBALS["ISC_CLASS_DB"]->StartTransaction();
+			$GLOBALS["APP_CLASS_DB"]->StartTransaction();
 		}
 
 		/**
@@ -424,7 +417,7 @@ class ISC_ENTITY_BASE
 		 */
 		if (method_exists($this, "deletePrehook") && $this->deletePrehook($nodeId, $node, $extraOption) === false) {
 			if ($this->useTransactions) {
-				$GLOBALS["ISC_CLASS_DB"]->RollbackTransaction();
+				$GLOBALS["APP_CLASS_DB"]->RollbackTransaction();
 			}
 
 			return false;
@@ -433,24 +426,17 @@ class ISC_ENTITY_BASE
 		/**
 		 * Do the delete
 		 */
-		$rtn = $GLOBALS["ISC_CLASS_DB"]->DeleteQuery($this->tableName, "WHERE " . $whereClause);
+		$rtn = $GLOBALS["APP_CLASS_DB"]->DeleteQuery($this->tableName, "WHERE " . $whereClause);
 
 		if ($rtn === false) {
-			$error = $GLOBALS["ISC_CLASS_DB"]->Error();
+			$error = $GLOBALS["APP_CLASS_DB"]->Error();
 			$this->setError($error);
 
 			if ($this->useTransactions) {
-				$GLOBALS["ISC_CLASS_DB"]->RollbackTransaction();
+				$GLOBALS["APP_CLASS_DB"]->RollbackTransaction();
 			}
 
 			return false;
-		}
-
-		/**
-		 * Delete the form session if we have one (saves us defining it all the time in the posthook)
-		 */
-		if (trim($this->customKeyName) !== "" && array_key_exists($this->customKeyName, $node) && isId($node[$this->customKeyName])) {
-			$GLOBALS["ISC_CLASS_FORM"]->deleteFormSession($node[$this->customKeyName]);
 		}
 
 		/**
@@ -458,14 +444,14 @@ class ISC_ENTITY_BASE
 		 */
 		if (method_exists($this, "deletePosthook") && $this->deletePosthook($nodeId, $node) === false) {
 			if ($this->useTransactions) {
-				$GLOBALS["ISC_CLASS_DB"]->RollbackTransaction();
+				$GLOBALS["APP_CLASS_DB"]->RollbackTransaction();
 			}
 
 			return false;
 		}
 
 		if ($this->useTransactions) {
-			$GLOBALS["ISC_CLASS_DB"]->CommitTransaction();
+			$GLOBALS["APP_CLASS_DB"]->CommitTransaction();
 		}
 
 		return true;
@@ -558,10 +544,6 @@ class ISC_ENTITY_BASE
 			$negateFields = array();
 		}
 
-		if (isId($formSession)) {
-			$formSession = $GLOBALS["ISC_CLASS_FORM"]->getSavedSessionData($formSession);
-		}
-
 		/**
 		 * Now to contstruct there search clause. Fix up our args before we start using them
 		 */
@@ -634,7 +616,7 @@ class ISC_ENTITY_BASE
 						$clause .= " NOT";
 					}
 
-					$clause .= " LIKE '%" . $GLOBALS["ISC_CLASS_DB"]->Quote($keyword) . "%'";
+					$clause .= " LIKE '%" . $GLOBALS["APP_CLASS_DB"]->Quote($keyword) . "%'";
 					$tmpWhere[] = $clause;
 				}
 
@@ -651,7 +633,7 @@ class ISC_ENTITY_BASE
 				$tmpKeyword = array();
 
 				foreach ($keyword as $key) {
-					$tmpKeyword[] = "'" . $GLOBALS["ISC_CLASS_DB"]->Quote($key) . "'";
+					$tmpKeyword[] = "'" . $GLOBALS["APP_CLASS_DB"]->Quote($key) . "'";
 				}
 
 				$tmpKeyword = implode(",", $tmpKeyword);
@@ -694,7 +676,7 @@ class ISC_ENTITY_BASE
 		}
 
 		$query .= "
-					FROM [|PREFIX|]" . $this->tableName . "
+					FROM " . $this->tableName . "
 					WHERE 1=1 " . $where;
 
 		/**
@@ -702,20 +684,17 @@ class ISC_ENTITY_BASE
 		 * then just return the query result
 		 */
 		if ($this->customKeyName == "" || !is_array($formSession) || empty($formSession)) {
-			return $GLOBALS["ISC_CLASS_DB"]->FetchOne($query, "entityid");
+			return $GLOBALS["APP_CLASS_DB"]->FetchOne($query, "entityid");
 
 		/**
 		 * Else we need to loop through all the matches results and then match against their saved
 		 * form session data (if any)
 		 */
 		} else {
-			$result = $GLOBALS["ISC_CLASS_DB"]->Query($query);
-			while ($row = $GLOBALS["ISC_CLASS_DB"]->Fetch($result)) {
+			$result = $GLOBALS["APP_CLASS_DB"]->Query($query);
+			while ($row = $GLOBALS["APP_CLASS_DB"]->Fetch($result)) {
 
 				$sessData = array();
-				if (isId($row["formsessionid"])) {
-					$sessData = $GLOBALS["ISC_CLASS_FORM"]->getSavedSessionData($row["formsessionid"]);
-				}
 
 				if (!is_array($sessData) || empty($sessData) || count($formSession) !== count($sessData)) {
 					continue;
@@ -731,5 +710,42 @@ class ISC_ENTITY_BASE
 		}
 
 		return false;
+	}
+	
+	public function checkEntitySchema(){
+		if(!$GLOBALS["APP_CLASS_DB"]->tableExists($this->tableName)){
+			print sprintf(GetLang('ErrorTableNotExists'), $this->tableName).APP_EOL;
+			
+			if(!$GLOBALS["APP_CLASS_DB"]->CreateTableForEntity($this->tableName)){
+				print sprintf(GetLang('ErrorCreatingTable'), $this->tableName).':'.$GLOBALS["APP_CLASS_DB"]->GetError().APP_EOL;
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	public function getTableName(){
+		return $this->tableName;
+	}
+	
+	public function getSchema(){
+		return $this->schema;
+	}
+	
+	public function getPrimaryKeyName(){
+		return $this->primaryKeyName;
+	}
+	
+	public function getSearchFields(){
+		return $this->searchFields;
+	}
+	
+	public function getCustomKeyName(){
+		return $this->customKeyName;
+	}
+	
+	public function getUseTransactions(){
+		return $this->useTransactions;
 	}
 }

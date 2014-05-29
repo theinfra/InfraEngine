@@ -26,8 +26,51 @@ function getClass($classname){
 	}
 }
 
+function getEntity($entityname){
+	$entityfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'entities'.DIRECTORY_SEPARATOR.'entity.'.$entityname.'.php';
+	if($entityname != '' and file_exists($entityfile)){
+		include_once $entityfile;
+		$entity = 'APPENTITY_'.strtoupper($entityname);
+		$entity = new $entity();
+		return $entity;
+	}
+}
+
+function getAdminAction($actionname){
+	$actionfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'adminaction'.DIRECTORY_SEPARATOR.'action.'.$actionname.'.php';
+	if($actionname != '' and file_exists($actionfile)){
+		include_once $actionfile;
+		$action = 'APPACTION_'.strtoupper($actionname);
+		$action = new $action();
+		return $action;
+	}
+}
+
+function redirectAdminAction($request){
+	$action = getAdminAction($request['adminaction']);
+	if(!isset($request['subaction']) || trim($request['subaction']) == ''){
+		$subaction = 'actiondefault';
+	}
+	else {
+		$subaction = $request['subaction'];
+	}
+	
+	if(method_exists($action, $subaction)){
+		$action->$subaction();
+	}
+	else {
+		print "No hay la subaccion ".$subaction." de la accion ".$request['adminaction'];
+		exit;
+	}
+}
+
 function redirectRequest(){
 	$request = parseGetVars();
+	
+	if(isset($request['adminaction']) && trim($request['adminaction']) != ''){
+		redirectAdminAction($request);
+		exit;
+	}
 
 	if(isset($request[0]) && trim($request[0]) != ''){
 		$handler = strtolower($request[0]);
@@ -48,7 +91,7 @@ function redirectRequest(){
 		$class->$operation();
 	}
 	else if (method_exists($class, 'view')){
-		$class->View();
+		$class->view();
 	}
 	else {
 		print "no hay el metodo ".$operation." de la clase ".$handler." ni tampoco su metodo view por omisión";
@@ -268,5 +311,36 @@ function app_json_encode($a=false)
 			$result[] = app_json_encode((string)$k).':'.app_json_encode($v);
 		}
 		return '{' . implode(',', $result) . '}';
+	}
+}
+
+function app_is_int($x)
+{
+	if (is_numeric($x)) {
+		return (intval($x+0) == $x);
+	}
+
+	return false;
+}
+
+function isId($id)
+{
+	// If the type casted version fo the integer is the same as what's passed
+	// and the integer is > 0, then it's a valid ID.
+	if(app_is_int($id) && $id > 0) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+function app_strtolower($str)
+{
+	if(function_exists("mb_strtolower")) {
+		return mb_strtolower($str);
+	}
+	else {
+		return strtolower($str);
 	}
 }

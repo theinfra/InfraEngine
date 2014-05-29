@@ -39,3 +39,9 @@ if (isset($GLOBALS['APP_LANG'])) {
 	$GLOBALS['APP_LANG'] = $vars;
 }
 
+if(PHP_SAPI === 'cli'){
+	define('APP_EOL', PHP_EOL);
+}
+else {
+	define('APP_EOL', "<br />".PHP_EOL);
+}
