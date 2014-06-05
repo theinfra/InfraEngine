@@ -41,13 +41,31 @@ function getAdminAction($actionname){
 	if($actionname != '' and file_exists($actionfile)){
 		include_once $actionfile;
 		$action = 'APPACTION_'.strtoupper($actionname);
-		$action = new $action();
+		try{
+			$action = new $action();
+		}
+		catch(Exception $e){
+			throw new Exception(GetLang('ExceptionWhileCreatingAdminAction') .' - '. $e->getMessage());
+			return false;
+		}
 		return $action;
 	}
 }
 
 function redirectAdminAction($request){
-	$action = getAdminAction($request['adminaction']);
+	try{
+		$action = getAdminAction($request['adminaction']);
+	}
+	catch(Exception $e){
+		print $e->getMessage();
+		return false;
+	}
+
+	if(false){
+		print "erkgjergk";
+		return false;
+	}
+	
 	if(!isset($request['subaction']) || trim($request['subaction']) == ''){
 		$subaction = 'actiondefault';
 	}
