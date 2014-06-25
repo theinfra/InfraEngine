@@ -681,26 +681,49 @@ class Db {
 	
 	public function fieldExists($tableName, $fieldName, $fieldDetails){
 		$query = "SELECT COLUMN_NAME FROM `information_schema`.`columns`
-			WHERE TABLE_SCHEMA = '".GetConfig('db_name')."' AND TABLE_NAME = '".$tableName."'".PHP_EOL;
+			WHERE TABLE_SCHEMA = '".GetConfig('db_name')."' AND TABLE_NAME = '".$tableName."' AND COLUMN_NAME = '".$fieldName."'".PHP_EOL;
 
 		if(!isset($fieldDetail['type'])){
 			return false;
 		}
 		
-		$query .= " AND LOWER(DATA_TYPE) = '".strtolower($fieldDetails['type'])."'".PHP_EOL;
-		
-		$tipesNoSize = array('date', 'datetime', 'timestamp', 'time', 'tinyblob', 'blob', 'mediumblob', 'longblob', 'tinytext', 'text', 'mediumtext', 'longtext');
-		if(!in_array(strtoupper($fieldDetails['type']), $typesNoSize) && !isset($fieldDetails['size'])){
-			return false;
+		if(!empty($fieldDetails)){
+			$typesNoSize = array('date', 'datetime', 'timestamp', 'time', 'tinyblob', 'blob', 'mediumblob', 'longblob', 'tinytext', 'text', 'mediumtext', 'longtext');
+			$typesTextWithSize = array('char', 'varchar', 'binary', 'varbinary', 'enum', 'set');
+			if(in_array(strtolower($fieldDetails['type']), $typesNoSize)){
+				$query .= " AND LOWER(DATA_TYPE) = '".strtolower($fieldDetails['type']."'".PHP_EOL);
+			}
+			elseif(!in_array(strtolower($fieldDetails['type']), $typesNoSize) && !isset($fieldDetails['size'])){
+				return false;
+			}
+			else {
+				if(in_array(strtolower($fieldDetails['type'], $typesTextWithSize))){
+					$query .= " AND LOWER(DATA_TYPE) = '".strtolower($fieldDetails['type']."' AND CHARACTER_MAXIMUM_LENGTH = '".$fieldDetails['size']."'".PHP_EOL);
+				}
+				else {
+					//ToDo: Sacar Precision y Scale de $fieldDetails['size'], checar que sean dos y numericos y meterlos en $precision y $scale por medio de list()
+					
+					$query .= " AND LOWER(DATA_TYPE) = '".strtolower($fieldDetails['type']."' AND NUMERIC_PRECISION = '".$precision."' AND NUMERIC_SCALE = '".$scale."'".PHP_EOL);
+				}
+			}
+			
+			//ToDo: Hacer la query y regresar si se encuentra o no.
 		}
-		
-		if(in_array(strtoupper($fieldDetails['type']), $typesNoSize)){
-			$query .= " AND ".$fieldDetails['type'];
+		else {
+			return false;
 		}
 	}
 	
 	public function createField($tableName, $fieldName, $fieldDetails){
-		
+		if($this->fieldExists($tableName, $fieldName, array())){
+			
+		}
+		else{
+			$query = "ALTER TABLE ".$tableName." ADD ".$fieldName." ";
+			$query .= "INT ";
+			$query .= "NULL ";
+			$query .= "DEFAULT NULL";
+		}
 	}
 	
 }
