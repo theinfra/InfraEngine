@@ -670,11 +670,11 @@ class APPENTITYBASE
 		}
 
 		$query = "SELECT " . $this->primaryKeyName . " AS entityid";
-
+/*
 		if (trim($this->customKeyName) !== "") {
 			$query .= ", " . $this->customKeyName . " AS formsessionid";
 		}
-
+*/
 		$query .= "
 					FROM " . $this->tableName . "
 					WHERE 1=1 " . $where;
@@ -690,7 +690,9 @@ class APPENTITYBASE
 		 * Else we need to loop through all the matches results and then match against their saved
 		 * form session data (if any)
 		 */
-		} else {
+		} 
+		/*
+		else {
 			$result = $GLOBALS["APP_CLASS_DB"]->Query($query);
 			while ($row = $GLOBALS["APP_CLASS_DB"]->Fetch($result)) {
 
@@ -708,6 +710,7 @@ class APPENTITYBASE
 				}
 			}
 		}
+		*/
 
 		return false;
 	}
@@ -719,6 +722,12 @@ class APPENTITYBASE
 			if(!$GLOBALS["APP_CLASS_DB"]->CreateTableForEntity($this->tableName)){
 				print sprintf(GetLang('ErrorCreatingTable'), $this->tableName).':'.$GLOBALS["APP_CLASS_DB"]->GetError().APP_EOL;
 				return false;
+			}
+		}
+		
+		foreach($this->schema as $fieldName => $fieldDetails){
+			if(!$GLOBALS["APP_CLASS_DB"]->fieldExists($this->tableName, $fieldName, $fieldDetails)){
+				$GLOBALS["APP_CLASS_DB"]->createfield($this->tableName, $fieldName, $fieldDetails);
 			}
 		}
 		
