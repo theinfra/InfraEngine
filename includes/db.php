@@ -667,15 +667,40 @@ class Db {
 		
 		$query .= ')'.PHP_EOL;
 		if($entity->getUseTransactions()){
-			$query .= 'ENGINE=InnoDB';
+			$query .= "\tENGINE=InnoDB";
 		}
 		else {
-			$query .= 'ENGINE=MyISAM';
+			$query .= "\tENGINE=MyISAM";
 		}
 
-		$query .= 'CHARSET=utf8 COLLATE utf8_general_ci'.PHP_EOL;
+		$query .= "\tCHARSET=utf8 COLLATE utf8_general_ci".PHP_EOL;
 		
 		print $query.APP_EOL;
 		return true;
 	}
+	
+	public function fieldExists($tableName, $fieldName, $fieldDetails){
+		$query = "SELECT COLUMN_NAME FROM `information_schema`.`columns`
+			WHERE TABLE_SCHEMA = '".GetConfig('db_name')."' AND TABLE_NAME = '".$tableName."'".PHP_EOL;
+
+		if(!isset($fieldDetail['type'])){
+			return false;
+		}
+		
+		$query .= " AND LOWER(DATA_TYPE) = '".strtolower($fieldDetails['type'])."'".PHP_EOL;
+		
+		$tipesNoSize = array('date', 'datetime', 'timestamp', 'time', 'tinyblob', 'blob', 'mediumblob', 'longblob', 'tinytext', 'text', 'mediumtext', 'longtext');
+		if(!in_array(strtoupper($fieldDetails['type']), $typesNoSize) && !isset($fieldDetails['size'])){
+			return false;
+		}
+		
+		if(in_array(strtoupper($fieldDetails['type']), $typesNoSize)){
+			$query .= " AND ".$fieldDetails['type'];
+		}
+	}
+	
+	public function createField($tableName, $fieldName, $fieldDetails){
+		
+	}
+	
 }
