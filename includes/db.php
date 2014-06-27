@@ -645,7 +645,7 @@ class Db {
 		foreach($tablefields as $field => $definition){
 			$query .= "\t`".$field."` ";
 			$query .= $definition['type'];
-			$query .= '('.$definition['size'].')';
+			if(isset($definition['size'])) $query .= '('.$definition['size'].')';
 			
 			if(isset($definition['null']) && $definition['null']){
 				$query .= ' NULL';
@@ -683,31 +683,32 @@ class Db {
 		$query = "SELECT COLUMN_NAME FROM `information_schema`.`columns`
 			WHERE TABLE_SCHEMA = '".GetConfig('db_name')."' AND TABLE_NAME = '".$tableName."' AND COLUMN_NAME = '".$fieldName."'".PHP_EOL;
 
-		if(!isset($fieldDetail['type'])){
-			return false;
-		}
-		
 		if(!empty($fieldDetails)){
+			if(!isset($fieldDetails['type'])){
+				return false;
+			}
+			
 			$typesNoSize = array('date', 'datetime', 'timestamp', 'time', 'tinyblob', 'blob', 'mediumblob', 'longblob', 'tinytext', 'text', 'mediumtext', 'longtext');
-			$typesTextWithSize = array('char', 'varchar', 'binary', 'varbinary', 'enum', 'set');
 			if(in_array(strtolower($fieldDetails['type']), $typesNoSize)){
-				$query .= " AND LOWER(DATA_TYPE) = '".strtolower($fieldDetails['type']."'".PHP_EOL);
+				$query .= " AND LOWER(COLUMN_TYPE) = '".strtolower($fieldDetails['type']."'".PHP_EOL);
 			}
 			elseif(!in_array(strtolower($fieldDetails['type']), $typesNoSize) && !isset($fieldDetails['size'])){
 				return false;
 			}
 			else {
-				if(in_array(strtolower($fieldDetails['type'], $typesTextWithSize))){
-					$query .= " AND LOWER(DATA_TYPE) = '".strtolower($fieldDetails['type']."' AND CHARACTER_MAXIMUM_LENGTH = '".$fieldDetails['size']."'".PHP_EOL);
-				}
-				else {
-					//ToDo: Sacar Precision y Scale de $fieldDetails['size'], checar que sean dos y numericos y meterlos en $precision y $scale por medio de list()
-					
-					$query .= " AND LOWER(DATA_TYPE) = '".strtolower($fieldDetails['type']."' AND NUMERIC_PRECISION = '".$precision."' AND NUMERIC_SCALE = '".$scale."'".PHP_EOL);
-				}
+				$query .= " AND LOWER(COLUMN_TYPE) = '".strtolower($fieldDetails['type']."(".$fieldDetails['size'].")'".PHP_EOL);
 			}
 			
-			//ToDo: Hacer la query y regresar si se encuentra o no.
+			if(isset($fieldDetails['null']) && $fieldDetails['null']){
+				$query .= " AND IS_NULLABLE = 'YES'";
+			}
+			else {
+				$query .= " AND IS_NULLABLE = 'NO'";
+			}
+		}
+
+		if($this->CountResult($query) > 0) {
+			return true;
 		}
 		else {
 			return false;
@@ -716,13 +717,26 @@ class Db {
 	
 	public function createField($tableName, $fieldName, $fieldDetails){
 		if($this->fieldExists($tableName, $fieldName, array())){
+			print "el field ".$fieldName." existe pero no esta exacto<br>";
+			$query = "ALTER TABLE ".$tableName." MODIFY COLUMN ".$fieldName." ";
+			$query .= $fieldDetails['type'];
+			if(isset($fieldDetails['size'])) $query.= "(".$fieldDetails['size'].") ";
+			$query .= (isset($fieldDetails['null']) && $fieldDetails['null']) ? "NULL " : "NOT NULL ";
+			if(isset($fieldDetails['default'])) $query .= "DEFAULT ".$fieldDetails['default'];
 			
+			$result = $this->Query($query);
 		}
 		else{
-			$query = "ALTER TABLE ".$tableName." ADD ".$fieldName." ";
-			$query .= "INT ";
-			$query .= "NULL ";
-			$query .= "DEFAULT NULL";
+			print "el field ".$fieldName." no existe<br>";
+			$result = false;
+		}
+		
+		if(!$result) {
+			return true;
+		}
+		else{
+			print "Error al crear o alterar el campo: ".$this->GetError()."**";
+			return false;
 		}
 	}
 	
