@@ -749,4 +749,24 @@ class Db {
 		}
 	}
 	
+	public function checkTablePK($tableName, $tablePKFields){
+		if(is_array($tablePKFields) && !empty($tablePKFields)){
+			foreach($tablePKFields as $fieldName){
+				$query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE CONSTRAINT_SCHEMA = '".GetConfig('db_name')."' AND TABLE_NAME = '".$tableName."'
+						AND CONSTRAINT_NAME = 'PRIMARY' AND COLUMN_NAME = '".$fieldName."'";
+				if($this->CountResult($query) == 0){
+					return false;
+				}
+			}
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public function createTablePK($tableName, $tablePKFields){
+		
+	}
+	
 }

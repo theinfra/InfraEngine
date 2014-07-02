@@ -13,7 +13,7 @@ class APPACTION_UPDATEDB extends ADMINACTIONBASE {
 		}
 		
 		$this->addToLog("Se termino de checar entidades");
-		$this->printLog('UPDATEDB');
+		$this->printLog();
 	}
 	
 	private function CheckEntities(){
@@ -28,6 +28,7 @@ class APPACTION_UPDATEDB extends ADMINACTIONBASE {
 			
 			$entity->setAdminAction($this);
 			
+			$this->addToLog("Revisando entidad '".$entityname."'");
 			if(!$entity->checkEntitySchema()){
 				$this->addToLog(sprintf(GetLang('ErrorWhileCheckingSchema'), $entityname));
 			}

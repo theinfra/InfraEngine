@@ -23,10 +23,10 @@ class ADMINACTIONBASE {
 		}
 	}
 	
-	protected function printLog($index){
-		if(is_array($GLOBALS['ADMINACTION_LOG']['APPACTION_'.$index]) && !empty($GLOBALS['ADMINACTION_LOG']['APPACTION_'.$index])){
+	protected function printLog(){
+		if(is_array($GLOBALS['ADMINACTION_LOG'][get_class($this)]) && !empty($GLOBALS['ADMINACTION_LOG'][get_class($this)])){
 			print "<ul>";
-			foreach($GLOBALS['ADMINACTION_LOG']['APPACTION_'.$index] as $logentry){
+			foreach($GLOBALS['ADMINACTION_LOG'][get_class($this)] as $logentry){
 				print "<li>".$logentry."</li>";
 			}
 			print "</ul>";
