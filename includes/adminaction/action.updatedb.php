@@ -5,10 +5,15 @@ require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'base.php');
 class APPACTION_UPDATEDB extends ADMINACTIONBASE {
 	
 	public function actiondefault(){
+		$GLOBALS['ADMINACTION_LOG']['UPDATEDB'] = array();
 		if(!$this->CheckEntities()){
-			print "Error al checar entidades";
+			$this->addToLog("Error al checar entidades");
+			$this->printLog('UPDATEDB');
 			exit;
 		}
+		
+		$this->addToLog("Se termino de checar entidades");
+		$this->printLog('UPDATEDB');
 	}
 	
 	private function CheckEntities(){
@@ -21,8 +26,10 @@ class APPACTION_UPDATEDB extends ADMINACTIONBASE {
 			$entityname = preg_replace('#entity\.#', '', preg_replace('#\.php$#', '', $file));
 			$entity = getEntity($entityname);
 			
+			$entity->setAdminAction($this);
+			
 			if(!$entity->checkEntitySchema()){
-				print sprintf(GetLang('ErrorWhileCheckingSchema'), $entityname);
+				$this->addToLog(sprintf(GetLang('ErrorWhileCheckingSchema'), $entityname));
 			}
 		}
 		return true;

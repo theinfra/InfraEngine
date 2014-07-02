@@ -15,6 +15,8 @@ class APPENTITYBASE
 	protected $customKeyName;
 	protected $useTransactions;
 	protected $allowedSQLFunctions;
+	
+	protected $adminAction;
 
 	/**
 	 * Constructor
@@ -715,20 +717,32 @@ class APPENTITYBASE
 		return false;
 	}
 	
+	public function setAdminAction($action){
+		if(is_a($action, 'ADMINACTIONBASE')){
+			$this->adminAction = $action;
+		}
+	}
+	
 	public function checkEntitySchema(){
 		if(!$GLOBALS["APP_CLASS_DB"]->tableExists($this->tableName)){
-			print sprintf(GetLang('ErrorTableNotExists'), $this->tableName).APP_EOL;
+			$GLOBALS['ADMINACTION_LOG']['UPDATEDB'][] = sprintf(GetLang('ErrorTableNotExists'), $this->tableName).APP_EOL;
 			
 			if(!$GLOBALS["APP_CLASS_DB"]->CreateTableForEntity($this->tableName)){
-				print sprintf(GetLang('ErrorCreatingTable'), $this->tableName).':'.$GLOBALS["APP_CLASS_DB"]->GetError().APP_EOL;
+				$this->adminAction->addToLog(sprintf(GetLang('ErrorCreatingTable'), $this->tableName).':'.$GLOBALS["APP_CLASS_DB"]->GetError().APP_EOL);
 				return false;
+			}
+			else {
+				$this->adminAction->addToLog("Se creo la tabla ".$this->tableName." que faltaba");
 			}
 		}
 		
 		foreach($this->schema as $fieldName => $fieldDetails){
 			if(!$GLOBALS["APP_CLASS_DB"]->fieldExists($this->tableName, $fieldName, $fieldDetails)){
 				if(!$GLOBALS["APP_CLASS_DB"]->createfield($this->tableName, $fieldName, $fieldDetails)){
-					print sprintf(GetLang('ErrorCreatingField'), $fieldName, $this->tableName).". Error: ".$GLOBALS["APP_CLASS_DB"]->GetError();
+					$this->adminAction->addToLog(sprintf(GetLang('ErrorCreatingField'), $fieldName, $this->tableName).". Error: ".$GLOBALS["APP_CLASS_DB"]->GetError());
+				}
+				else {
+					$this->adminAction->addToLog("Se creo o edito el campo ".$fieldName." de la tabla ".$this->tableName." que faltaba");
 				}
 			}
 		}

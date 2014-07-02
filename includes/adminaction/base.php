@@ -22,4 +22,23 @@ class ADMINACTIONBASE {
 			return;
 		}
 	}
+	
+	protected function printLog($index){
+		if(is_array($GLOBALS['ADMINACTION_LOG']['APPACTION_'.$index]) && !empty($GLOBALS['ADMINACTION_LOG']['APPACTION_'.$index])){
+			print "<ul>";
+			foreach($GLOBALS['ADMINACTION_LOG']['APPACTION_'.$index] as $logentry){
+				print "<li>".$logentry."</li>";
+			}
+			print "</ul>";
+		}
+	}
+	
+	public function addToLog($logentry){
+		$actionname = get_class($this);
+		if(!isset($GLOBALS['ADMINACTION_LOG'][$actionname]) || !is_array($GLOBALS['ADMINACTION_LOG'][$actionname])){
+			$GLOBALS['ADMINACTION_LOG'][$actionname] = array();
+		}
+		
+		$GLOBALS['ADMINACTION_LOG'][$actionname][] = $logentry;
+	}
 }
