@@ -675,8 +675,14 @@ class Db {
 
 		$query .= "\tCHARSET=utf8 COLLATE utf8_general_ci".PHP_EOL;
 		
-		print $query.APP_EOL;
-		return true;
+		$result = $this->Query($query);
+		
+		if($result) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public function fieldExists($tableName, $fieldName, $fieldDetails){
@@ -717,25 +723,28 @@ class Db {
 	
 	public function createField($tableName, $fieldName, $fieldDetails){
 		if($this->fieldExists($tableName, $fieldName, array())){
-			print "el field ".$fieldName." existe pero no esta exacto<br>";
 			$query = "ALTER TABLE ".$tableName." MODIFY COLUMN ".$fieldName." ";
 			$query .= $fieldDetails['type'];
 			if(isset($fieldDetails['size'])) $query.= "(".$fieldDetails['size'].") ";
 			$query .= (isset($fieldDetails['null']) && $fieldDetails['null']) ? "NULL " : "NOT NULL ";
-			if(isset($fieldDetails['default'])) $query .= "DEFAULT ".$fieldDetails['default'];
+			if(isset($fieldDetails['default'])) $query .= "DEFAULT '".$fieldDetails['default']."'";
 			
 			$result = $this->Query($query);
 		}
 		else{
-			print "el field ".$fieldName." no existe<br>";
-			$result = false;
+			$query = "ALTER TABLE ".$tableName." ADD COLUMN ".$fieldName." ";
+			$query .= $fieldDetails['type'];
+			if(isset($fieldDetails['size'])) $query.= "(".$fieldDetails['size'].") ";
+			$query .= (isset($fieldDetails['null']) && $fieldDetails['null']) ? "NULL " : "NOT NULL ";
+			if(isset($fieldDetails['default'])) $query .= "DEFAULT '".$fieldDetails['default']."'";
+
+			$result = $this->Query($query);
 		}
 		
-		if(!$result) {
+		if($result) {
 			return true;
 		}
 		else{
-			print "Error al crear o alterar el campo: ".$this->GetError()."**";
 			return false;
 		}
 	}

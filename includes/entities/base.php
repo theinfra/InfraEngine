@@ -727,7 +727,9 @@ class APPENTITYBASE
 		
 		foreach($this->schema as $fieldName => $fieldDetails){
 			if(!$GLOBALS["APP_CLASS_DB"]->fieldExists($this->tableName, $fieldName, $fieldDetails)){
-				$GLOBALS["APP_CLASS_DB"]->createfield($this->tableName, $fieldName, $fieldDetails);
+				if(!$GLOBALS["APP_CLASS_DB"]->createfield($this->tableName, $fieldName, $fieldDetails)){
+					print sprintf(GetLang('ErrorCreatingField'), $fieldName, $this->tableName).". Error: ".$GLOBALS["APP_CLASS_DB"]->GetError();
+				}
 			}
 		}
 		
