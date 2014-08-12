@@ -170,7 +170,7 @@ function GetConfig($name){
 
 function GetLang($name){
 	if(!isset($GLOBALS['APP_LANG'][$name])) {
-		return '';
+		return 'ErrorNoLangName: "'.$name.'"';
 	}
 
 	return $GLOBALS['APP_LANG'][$name];
