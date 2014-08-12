@@ -750,23 +750,48 @@ class Db {
 	}
 	
 	public function checkTablePK($tableName, $tablePKFields){
+		$query_count = "SELECT COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE CONSTRAINT_SCHEMA = '".GetConfig('db_name')."' AND TABLE_NAME = '".$tableName."'
+						AND CONSTRAINT_NAME = 'PRIMARY'";
+		if($this->CountResult($query_count) != count($tablePKFields)){
+			if(!$this->createTablePK($tableName, $tablePKFields)){
+				return false;
+			}
+		}
+		
 		if(is_array($tablePKFields) && !empty($tablePKFields)){
 			foreach($tablePKFields as $fieldName){
 				$query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE CONSTRAINT_SCHEMA = '".GetConfig('db_name')."' AND TABLE_NAME = '".$tableName."'
 						AND CONSTRAINT_NAME = 'PRIMARY' AND COLUMN_NAME = '".$fieldName."'";
 				if($this->CountResult($query) == 0){
+					//print "el campo ".$fieldName." no esta en la PK de ".$tableName;
 					return false;
 				}
 			}
+			//print ". Los campos (".implode(',', $tablePKFields).") de la tabla ".$tableName. "estan bien";
 			return true;
 		}
 		else {
-			return false;
+			return true;
 		}
 	}
 	
 	public function createTablePK($tableName, $tablePKFields){
+		$query_hasPK = "SELECT 1 FROM information_schema.columns WHERE table_schema = '".GetConfig('db_name')."' AND table_name = '".$tableName."' AND column_key = 'PRI'";
+		if($this->CountResult($query_hasPK) > 0){
+			$query_drop = "ALTER TABLE ".$tableName." DROP PRIMARY KEY";
+			if(!$this->Query($query_drop)){
+				return false;
+			}
+		}
 		
+		if(is_array($tablePKFields) && !empty($tablePKFields)){
+			$query_add = "ALTER TABLE ".$tableName." ADD PRIMARY KEY (".implode(',', $tablePKFields).")";
+			if(!$this->Query($query_add)){
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 }

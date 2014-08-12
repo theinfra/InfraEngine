@@ -749,7 +749,7 @@ class APPENTITYBASE
 		
 		if(!$GLOBALS["APP_CLASS_DB"]->checkTablePK($this->tableName, $this->primaryKeyName)){
 			if(!$GLOBALS["APP_CLASS_DB"]->createTablePK($this->tableName, $this->primaryKeyName)){
-				$this->adminAction->addToLog(sprintf(GetLang('ErrorWhileCreatingTablePK')));
+				$this->adminAction->addToLog(sprintf(GetLang('ErrorWhileCreatingTablePK'), $this->tableName, implode(',', $this->primaryKeyName)).': "'.$GLOBALS["APP_CLASS_DB"]->GetError().'"');
 			}
 			else {
 				$this->adminAction->addToLog("Se creo o edito la Llave Primaria (".implode(',', $this->primaryKeyName).") de la tabla ".$this->tableName." que faltaba");
