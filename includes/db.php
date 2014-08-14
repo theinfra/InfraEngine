@@ -631,15 +631,15 @@ class Db {
 		}
 	}
 	
-	function CreateTableForEntity($entityname){
-		$entity = getEntity($entityname);
-		if(!$entity){
+	function CreateTableForModel($modelname){
+		$model = getModel($modelname);
+		if(!$model){
 			return false;
 		}
 		
-		$tablename = $entity->getTableName();
-		$tablefields = $entity->getSchema();
-		$tableprimarykey = $entity->getPrimaryKeyName();
+		$tablename = $model->getTableName();
+		$tablefields = $model->getSchema();
+		$tableprimarykey = $model->getPrimaryKeyName();
 		$query = 'CREATE TABLE IF NOT EXISTS `'.$tablename.'` (';
 		
 		foreach($tablefields as $field => $definition){
@@ -666,7 +666,7 @@ class Db {
 		$query .= "`)".PHP_EOL;
 		
 		$query .= ')'.PHP_EOL;
-		if($entity->getUseTransactions()){
+		if($model->getUseTransactions()){
 			$query .= "\tENGINE=InnoDB";
 		}
 		else {

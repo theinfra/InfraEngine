@@ -19,18 +19,18 @@ class APPACTION_UPDATEDB extends ADMINACTIONBASE {
 	private function CheckEntities(){
 		foreach(scandir(APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'entities') as $file){
 			$filepath = APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'entities'.DIRECTORY_SEPARATOR.$file;
-			if(in_array($file, array('.', '..', 'base.php')) || is_dir($filepath) || !(strpos($file, 'entity.') == '0')){
+			if(in_array($file, array('.', '..', 'base.php')) || is_dir($filepath) || !(strpos($file, 'model.') == '0')){
 				continue;
 			}
 			
-			$entityname = preg_replace('#entity\.#', '', preg_replace('#\.php$#', '', $file));
-			$entity = getEntity($entityname);
+			$modelname = preg_replace('#model\.#', '', preg_replace('#\.php$#', '', $file));
+			$model = getModel($modelname);
 			
-			$entity->setAdminAction($this);
+			$model->setAdminAction($this);
 			
-			$this->addToLog("Revisando entidad '".$entityname."'");
-			if(!$entity->checkEntitySchema()){
-				$this->addToLog(sprintf(GetLang('ErrorWhileCheckingSchema'), $entityname));
+			$this->addToLog("Revisando entidad '".$modelname."'");
+			if(!$model->checkModelSchema()){
+				$this->addToLog(sprintf(GetLang('ErrorWhileCheckingSchema'), $modelname));
 			}
 		}
 		return true;

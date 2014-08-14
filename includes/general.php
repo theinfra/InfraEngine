@@ -26,13 +26,13 @@ function getClass($classname){
 	}
 }
 
-function getEntity($entityname){
-	$entityfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'entities'.DIRECTORY_SEPARATOR.'entity.'.$entityname.'.php';
-	if($entityname != '' and file_exists($entityfile)){
-		include_once $entityfile;
-		$entity = 'APPENTITY_'.strtoupper($entityname);
-		$entity = new $entity();
-		return $entity;
+function getModel($modelname){
+	$modelfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'entities'.DIRECTORY_SEPARATOR.'model.'.$modelname.'.php';
+	if($modelname != '' and file_exists($modelfile)){
+		include_once $modelfile;
+		$model = 'APPMODEL_'.strtoupper($modelname);
+		$model = new $model();
+		return $model;
 	}
 }
 
