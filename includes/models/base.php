@@ -4,7 +4,7 @@ class APPMODELBASE
 {
 	const logError = false;
 
-	/** @var Db hacking in a shortcut to $GLOBALS['APP_CLASS_DB'] for entites since it's unlikely to change during script execution */
+	/** @var Db hacking in a shortcut to $GLOBALS['APP_CLASS_DB'] for models since it's unlikely to change during script execution */
 	protected $db;
 
 	protected $error;

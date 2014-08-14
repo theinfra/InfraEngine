@@ -27,7 +27,7 @@ function getClass($classname){
 }
 
 function getModel($modelname){
-	$modelfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'entities'.DIRECTORY_SEPARATOR.'model.'.$modelname.'.php';
+	$modelfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'model.'.$modelname.'.php';
 	if($modelname != '' and file_exists($modelfile)){
 		include_once $modelfile;
 		$model = 'APPMODEL_'.strtoupper($modelname);
