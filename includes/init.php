@@ -12,11 +12,11 @@ if(!function_exists('mysql_connect')){
 }
 
 include_once ''.APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'db.php';
-include_once ''.APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'template.php';
+include_once ''.APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'view.php';
 include_once ''.APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'session.php';
 include_once ''.APP_BASE_PATH.DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.'base.php';
 
-$GLOBALS['APP_CLASS_TEMPLATE'] = new CLASS_TEMPLATE();
+$GLOBALS['APP_CLASS_VIEW'] = new CLASS_VIEW();
 
 if(isset($_SERVER['HTTP_HOST']) && isset($_SERVER['SCRIPT_NAME'])){
 	$GLOBALS['AppPath'] = str_replace('/index.php', '', 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME']);

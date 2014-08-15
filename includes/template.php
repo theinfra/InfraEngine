@@ -1,6 +1,6 @@
 <?php
 
-class CLASS_TEMPLATE {
+class CLASS_VIEW {
 	private $tplData = '';
 	private $tplName = '';
 	
@@ -10,7 +10,7 @@ class CLASS_TEMPLATE {
 		print "**********************************<br>";
 	}
 	
-	function parseTemplate($tplname = '', $return = false){
+	function parseView($tplname = '', $return = false){
 		if(trim($tplname) == ''){
 			if ($return) {
 				return '';
@@ -19,7 +19,7 @@ class CLASS_TEMPLATE {
 			}
 		}
 		
-		$this->tplData = file_get_contents(APP_BASE_PATH.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.$tplname.'.tpl');
+		$this->tplData = file_get_contents(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$tplname.'.tpl');
 
 		$this->tplData = $this->parsePanels();
 		$this->tplData = $this->ParseGL($this->tplData);
@@ -31,10 +31,10 @@ class CLASS_TEMPLATE {
 		}
 	}
 	
-	public function ParseGL($TemplateData)
+	public function ParseGL($ViewData)
 	{
 		
-		preg_match_all("/(?siU)(%%LNG_[a-zA-Z0-9_]{1,}%%)/", $TemplateData, $matches);
+		preg_match_all("/(?siU)(%%LNG_[a-zA-Z0-9_]{1,}%%)/", $ViewData, $matches);
 		foreach ($matches[0] as $key => $k) {
 			$pattern1 = $k;
 			$pattern2 = str_replace("%", "", $pattern1);
@@ -42,20 +42,20 @@ class CLASS_TEMPLATE {
 
 			$lang = GetLang($pattern2);
 			if ($lang != '') {
-				$TemplateData = str_replace($pattern1, $lang, $TemplateData);
+				$ViewData = str_replace($pattern1, $lang, $ViewData);
 			}
 		}
 		
-		$TemplateData = $this->Parse("GLOBAL_", $TemplateData, $GLOBALS);
+		$ViewData = $this->Parse("GLOBAL_", $ViewData, $GLOBALS);
 		
-		return $TemplateData;
+		return $ViewData;
 	}
 	
 	public function GetPanelContent($PanelId)
 	{
 		$panelData = "";
 		
-		$panelTemplate = APP_BASE_PATH.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'Panels'.DIRECTORY_SEPARATOR.$PanelId.'.tpl';
+		$panelView = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'Panels'.DIRECTORY_SEPARATOR.$PanelId.'.tpl';
 		$panelLogic = APP_BASE_PATH.DIRECTORY_SEPARATOR.'display'.DIRECTORY_SEPARATOR.'panel.'.$PanelId.'.php';
 		include_once(APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'panel.php');
 		
@@ -64,12 +64,12 @@ class CLASS_TEMPLATE {
 			// Parse the PHP panel if it exists
 			include_once ($panelLogic);
 			$objPanel = new $panelClass ();
-			$objPanel->SetHTMLFile ( $panelTemplate );
+			$objPanel->SetHTMLFile ( $panelView );
 			
 			// Otherwise we have to parse the actual panel
 			$panelData = $objPanel->ParsePanel ();
 		} else {
-			$panelData = file_get_contents ( $panelTemplate );
+			$panelData = file_get_contents ( $panelView );
 		}
 
 		$panelData = $this->ParseGL($panelData);
@@ -106,7 +106,7 @@ class CLASS_TEMPLATE {
 	
 	public function GetSnippet($SnippetId)
 	{
-		$snippetFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'Snippets'.DIRECTORY_SEPARATOR.$SnippetId.'.tpl';
+		$snippetFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'Snippets'.DIRECTORY_SEPARATOR.$SnippetId.'.tpl';
 		if(!$snippetFile) {
 			return "<div>[Snippet not found: '" . $PanelId . "']</div>";
 		}
