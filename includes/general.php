@@ -130,6 +130,22 @@ function redirectRequest(){
 		print "no hay el metodo ".$operation." de la clase ".$handler." ni tampoco su metodo view por omisión";
 		exit;
 	}
+	
+	$viewname = '';
+	if($operation == 'view'){
+		if(file_exists(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$handler.'.view.tpl')){
+			$viewname = $handler.'.view';
+		}
+		else{
+			$viewname = $handler;
+		}
+	}
+	else {
+		$viewname = $handler.'.'.$operation;
+	}
+	
+	$GLOBALS['APP_CLASS_VIEW']->parseView($viewname);
+
 }
 
 function parseGetVars(){
