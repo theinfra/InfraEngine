@@ -17,13 +17,7 @@ class APPACTION_UPDATEDB extends ADMINACTIONBASE {
 	}
 	
 	private function CheckModels(){
-		foreach(scandir(APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'models') as $file){
-			$filepath = APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.$file;
-			if(in_array($file, array('.', '..', 'base.php')) || is_dir($filepath) || (strpos($file, '.') == '0') || !(strpos($file, 'model.') == '0')){
-				continue;
-			}
-			
-			$modelname = preg_replace('#model\.#', '', preg_replace('#\.php$#', '', $file));
+		foreach(getAllModels() as $modelname){
 			$model = getModel($modelname);
 			
 			$model->setAdminAction($this);
