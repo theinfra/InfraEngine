@@ -1,6 +1,6 @@
 <?php
 
-class APPCLASS_INDEX extends APP_BASE {
+class APPCONTROLLER_INDEX extends APP_BASE {
 	
 	function view(){
 		

@@ -16,13 +16,13 @@ function print_array($array, $nopre = false){
 	if(!$nopre) print "</pre>";
 }
 
-function getClass($classname){
-	$classfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.'class.'.$classname.'.php';
-	if($classname != '' and file_exists($classfile)){
-		include_once $classfile;
-		$class = 'APPCLASS_'.strtoupper($classname);
-		$class = new $class();
-		return $class;
+function getController($controller){
+	$controllerfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'controller.'.$controller.'.php';
+	if($controller != '' and file_exists($controllerfile)){
+		include_once $controllerfile;
+		$controllername = 'APPCONTROLLER_'.strtoupper($controller);
+		$controller = new $controllername();
+		return $controller;
 	}
 }
 
@@ -119,12 +119,12 @@ function redirectRequest(){
 		$operation = 'view';
 	}
 
-	$class = getClass($handler);
-	if(method_exists($class, $operation)){
-		$class->$operation();
+	$controller = getController($handler);
+	if(method_exists($controller, $operation)){
+		$controller->$operation();
 	}
-	else if (method_exists($class, 'view')){
-		$class->view();
+	else if (method_exists($controller, 'view')){
+		$controller->view();
 	}
 	else {
 		print "no hay el metodo ".$operation." de la clase ".$handler." ni tampoco su metodo view por omisión";

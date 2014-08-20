@@ -14,7 +14,7 @@ if(!function_exists('mysql_connect')){
 include_once ''.APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'db.php';
 include_once ''.APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'view.php';
 include_once ''.APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'session.php';
-include_once ''.APP_BASE_PATH.DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.'base.php';
+include_once ''.APP_BASE_PATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'base.php';
 
 $GLOBALS['APP_CLASS_VIEW'] = new CLASS_VIEW();
 
