@@ -14,7 +14,7 @@ class ADMINACTIONBASE {
 			return;
 		}
 		
-		if(hash('sha512', date('j').date('n').date('Y').GetConfig('AuthSalt')) != $request['auth']){
+		if(strtoupper(hash('sha512', date('j').date('n').date('Y').GetConfig('AuthSalt'))) != $request['auth']){
 			throw new Exception("No esta autorizado para realizar la accion ".get_class($this)." indicada. Login intentado en ".date('j-n-Y H:i'));
 			return;
 		}
