@@ -755,6 +755,13 @@ class APPMODELBASE
 				$this->adminAction->addToLog("Se creo o edito la Llave Primaria (".implode(',', $this->primaryKeyName).") de la tabla ".$this->tableName." que faltaba");
 			}
 		}
+		
+		if(!$GLOBALS["APP_CLASS_DB"]->checkTableIndex($this->tableName, $this->searchFields, $this->schema)){
+			$this->adminAction->addToLog(sprintf(GetLang('ErrorWhileCreatingTableIndex'), $this->tableName, implode(',', $this->searchFields)).': "'.$GLOBALS["APP_CLASS_DB"]->GetError().'"');
+		}
+		else {
+			$this->adminAction->addToLog("Se crearon o editaron las Llaves Indices (".implode(',', $this->searchFields).") de la tabla ".$this->tableName." que faltaban");
+		}
 
 		return true;
 	}

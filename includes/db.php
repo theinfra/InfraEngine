@@ -724,7 +724,7 @@ class Db {
 	public function createField($tableName, $fieldName, $fieldDetails){
 		if($this->fieldExists($tableName, $fieldName, array())){
 			$query = "ALTER TABLE ".$tableName." MODIFY COLUMN ".$fieldName." ";
-			$query .= $fieldDetails['type'];
+			$query .= $fieldDetails['type'] ." ";
 			if(isset($fieldDetails['size'])) $query.= "(".$fieldDetails['size'].") ";
 			$query .= (isset($fieldDetails['null']) && $fieldDetails['null']) ? "NULL " : "NOT NULL ";
 			if(isset($fieldDetails['default'])) $query .= "DEFAULT '".$fieldDetails['default']."'";
@@ -733,7 +733,7 @@ class Db {
 		}
 		else{
 			$query = "ALTER TABLE ".$tableName." ADD COLUMN ".$fieldName." ";
-			$query .= $fieldDetails['type'];
+			$query .= $fieldDetails['type'] ." ";
 			if(isset($fieldDetails['size'])) $query.= "(".$fieldDetails['size'].") ";
 			$query .= (isset($fieldDetails['null']) && $fieldDetails['null']) ? "NULL " : "NOT NULL ";
 			if(isset($fieldDetails['default'])) $query .= "DEFAULT '".$fieldDetails['default']."'";
@@ -788,6 +788,37 @@ class Db {
 			$query_add = "ALTER TABLE ".$tableName." ADD PRIMARY KEY (".implode(',', $tablePKFields).")";
 			if(!$this->Query($query_add)){
 				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	public function checkTableIndex($tableName, $tableKeyFields, $tableAllFields){
+		$query_keys = "select COLUMN_NAME from information_schema.columns where table_schema = '".GetConfig('db_name')."' AND table_name = '".$tableName."' AND COLUMN_KEY = 'MUL'";
+		$result_keys = $this->Query($query_keys);
+		$existing_keys = array();
+		while($row_keys = $this->Fetch($result_keys)){
+			$existing_keys[] = $row_keys['COLUMN_NAME'];
+		}
+
+		// COMO CHINGAOS DEBUGEO ESTO
+		foreach($tableAllFields as $fieldName => $fieldDetails){
+			if(!is_int(array_search($fieldName, $existing_keys))){
+				if(is_int(array_search($fieldName, $tableKeyFields))){
+					$query_add = "ALTER TABLE ".$tableName." ADD INDEX (".$fieldName.")";
+					if(!$this->Query($query_add)){
+						return false;
+					}
+				}
+			}
+			else {
+				if(!array_search($fieldName, $tableKeyFields)){
+					$query_drop = "ALTER TABLE ".$tableName." DROP INDEX ".$fieldName;
+					if(!$this->Query($query_drop)){
+						return false;
+					}
+				}
 			}
 		}
 		
