@@ -321,6 +321,11 @@ class Db {
 		if (!is_resource($resource)) {
 			$resource = $this->Query($resource);
 		}
+		
+		if(!$resource){
+			$this->SetError(mysql_error());
+			return false;
+		}
 
 		$count = mysql_num_rows($resource);
 		return $count;
@@ -702,7 +707,7 @@ class Db {
 				return false;
 			}
 			else {
-				$query .= " AND LOWER(COLUMN_TYPE) = '".strtolower($fieldDetails['type']."(".$fieldDetails['size'].")'".PHP_EOL);
+				$query .= " AND LOWER(COLUMN_TYPE) = '".strtolower($fieldDetails['type']."(".$GLOBALS["APP_CLASS_DB"]->Quote($fieldDetails['size']).")'".PHP_EOL);
 			}
 			
 			if(isset($fieldDetails['null']) && $fieldDetails['null']){

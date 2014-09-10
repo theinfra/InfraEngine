@@ -738,6 +738,10 @@ class APPMODELBASE
 		
 		foreach($this->schema as $fieldName => $fieldDetails){
 			if(!$GLOBALS["APP_CLASS_DB"]->fieldExists($this->tableName, $fieldName, $fieldDetails)){
+				if($GLOBALS["APP_CLASS_DB"]->GetError() != ''){
+					$this->adminAction->addToLog("Ocurrio un error al revisar el campo ".$fieldName." de la tabla ".$this->tableName.". Error: ".$GLOBALS["APP_CLASS_DB"]->GetError());
+				}
+				
 				if(!$GLOBALS["APP_CLASS_DB"]->createfield($this->tableName, $fieldName, $fieldDetails)){
 					$this->adminAction->addToLog(sprintf(GetLang('ErrorCreatingField'), $fieldName, $this->tableName).". Error: ".$GLOBALS["APP_CLASS_DB"]->GetError());
 				}
