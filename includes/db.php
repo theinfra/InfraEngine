@@ -802,22 +802,30 @@ class Db {
 			$existing_keys[] = $row_keys['COLUMN_NAME'];
 		}
 
-		// COMO CHINGAOS DEBUGEO ESTO
+		//ToDo: checar el TAMAÑO del index y si son diferentes tirarlo y crearlo
 		foreach($tableAllFields as $fieldName => $fieldDetails){
-			if(!is_int(array_search($fieldName, $existing_keys))){
-				if(is_int(array_search($fieldName, $tableKeyFields))){
-					$query_add = "ALTER TABLE ".$tableName." ADD INDEX (".$fieldName.")";
-					if(!$this->Query($query_add)){
+			if(!is_int(array_search($fieldName, $existing_keys)) && array_key_exists($fieldName, $tableKeyFields)){
+				if(in_array(strtoupper($fieldDetails['type']), array('TINYBLOB', 'BLOB', 'MEDIUMBLOB', 'LONGBLOB', 'TINYTEXT', 'TEXT', 'MEDIUMTEXT', 'LONGTEXT'))){
+					if(is_int($tableKeyFields[$fieldName])){
+						$query_add = "ALTER TABLE ".$tableName." ADD INDEX k_".$fieldName." (".$fieldName."(".$tableKeyFields[$fieldName]."))";
+					}
+					else {
+						$this->SetError(sprintf(GetLang("ErrorTextIndexNoSize"), $fieldName, $tableName, $fieldDetails['type']));
 						return false;
 					}
 				}
+				else {
+					$query_add = "ALTER TABLE ".$tableName." ADD INDEX k_".$fieldName." (".$fieldName.")";
+				}
+				
+				if(!$this->Query($query_add)){
+					return false;
+				}
 			}
-			else {
-				if(!array_search($fieldName, $tableKeyFields)){
-					$query_drop = "ALTER TABLE ".$tableName." DROP INDEX ".$fieldName;
-					if(!$this->Query($query_drop)){
-						return false;
-					}
+			elseif(is_int(array_search($fieldName, $existing_keys)) && !array_key_exists($fieldName, $tableKeyFields)){
+				$query_drop = "ALTER TABLE ".$tableName." DROP INDEX k_".$fieldName;
+				if(!$this->Query($query_drop)){
+					return false;
 				}
 			}
 		}

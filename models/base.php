@@ -760,7 +760,7 @@ class APPMODELBASE
 			$this->adminAction->addToLog(sprintf(GetLang('ErrorWhileCreatingTableIndex'), $this->tableName, implode(',', $this->searchFields)).': "'.$GLOBALS["APP_CLASS_DB"]->GetError().'"');
 		}
 		else {
-			$this->adminAction->addToLog("Se crearon o editaron las Llaves Indices (".implode(',', $this->searchFields).") de la tabla ".$this->tableName." que faltaban");
+			$this->adminAction->addToLog("Se revisaron las Llaves Indices (".implode(',', array_keys($this->searchFields)).") de la tabla ".$this->tableName." y se editaron si faltaban");
 		}
 
 		return true;
