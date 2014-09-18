@@ -1,12 +1,13 @@
 <?php
 
 class APP_BASE{
+	protected  $requestvars = '';
 	
 	function __construct(){
 		if (!isset($_SESSION)) {
 			session_start();
 		}
-		$request = parseGetVars();
+		$this->requestvars = parseGetVars();
 	}
 	
 	public function remote(){
