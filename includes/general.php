@@ -144,6 +144,10 @@ function redirectRequest(){
 		$viewname = $handler.'.'.$operation;
 	}
 	
+	if(!file_exists(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$viewname)){
+		$viewname = 'default';
+	}
+	
 	$GLOBALS['APP_CLASS_VIEW']->parseView($viewname);
 
 }
