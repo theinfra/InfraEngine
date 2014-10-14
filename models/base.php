@@ -232,6 +232,52 @@ class APPMODELBASE
 
 		return $node;
 	}
+	
+	public function getResultSet($offset = 0, $amount = 10, $where = array(), $columns = array()){
+		$query = "SELECT";
+		if(!is_array($columns) || empty($columns)){
+			$query .= " *";
+		}
+		else {
+			$query .= " " . implode(',', $columns);
+		}
+		
+		$query .= " FROM ".$this->tableName;
+		
+		if(is_array($where) && !empty($where)){
+			$query .= " WHERE 1=1";
+			foreach($where as $field => $value){
+				$query .= " AND ".$field . " = '".$value."' ";
+			}
+		}
+		
+		if(is_int($offset)){
+			if(is_int($amount)){
+				$query .= " LIMIT ".$offset. ", ".$amount;
+			}
+			else {
+				$query .= " LIMIT ".$offset. ", 10";
+			}
+		}
+		else if(is_int($amount)){
+			$query .= " LIMIT 0, ".$amount;
+		}
+		else {
+			$query .= " LIMIT 0, 10";
+		}
+
+		$result = $this->db->Query($query);
+		if(!$result){
+			return array();
+		}
+		
+		$resultSet = array();
+		while($row = $this->db->Fetch($result)){
+			$resultSet[] = $row;
+		}
+		
+		return $resultSet;
+	}
 
 	/**
 	 * Add a record
