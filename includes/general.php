@@ -113,26 +113,26 @@ function redirectRequest(){
 	}
 
 	if(isset($request[1]) && trim($request[1]) != ''){
-		$operation = strtolower($request[1]);
+		$action = strtolower($request[1]);
 	}
 	else {
-		$operation = 'view';
+		$action = 'view';
 	}
 
 	$controller = getController($handler);
-	if(method_exists($controller, $operation)){
-		$controller->$operation();
+	if(method_exists($controller, $action)){
+		$controller->$action();
 	}
 	else if (method_exists($controller, 'view')){
 		$controller->view();
 	}
 	else {
-		print "no hay el metodo ".$operation." de la clase ".$handler." ni tampoco su metodo view por omisión";
+		print "no hay el metodo ".$action." de la clase ".$handler." ni tampoco su metodo view por omisión";
 		exit;
 	}
 	
 	$viewname = '';
-	if($operation == 'view'){
+	if($action == 'view'){
 		if(file_exists(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$handler.'.view.tpl')){
 			$viewname = $handler.'.view';
 		}
@@ -141,10 +141,10 @@ function redirectRequest(){
 		}
 	}
 	else {
-		$viewname = $handler.'.'.$operation;
+		$viewname = $handler.'.'.$action;
 	}
 	
-	if(!file_exists(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$viewname)){
+	if(!file_exists(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$viewname.".tpl")){
 		$viewname = 'default';
 	}
 	
