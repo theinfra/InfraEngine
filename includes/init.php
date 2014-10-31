@@ -45,3 +45,8 @@ if(PHP_SAPI === 'cli'){
 else {
 	define('APP_EOL', "<br />".PHP_EOL);
 }
+
+header("Content-Type: text/html; charset=" . GetConfig('CharacterSet'));
+if(function_exists("mb_internal_encoding") && trim(GetConfig('CharacterSet')) != "") {
+	mb_internal_encoding(GetConfig('CharacterSet'));
+}
