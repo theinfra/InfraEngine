@@ -149,7 +149,7 @@ class APPMODELBASE
 				continue;
 			}
 
-			switch (app_strtolower($this->schema[$column])) {
+			switch (app_strtolower($this->schema[$column]['type'])) {
 				case "text":
 					$value = (string)$value;
 					break;
@@ -173,7 +173,7 @@ class APPMODELBASE
 
 					break;
 				default:
-					if (method_exists($this, "format" . $this->schema[$column] . "Hook")) {
+					if (method_exists($this, "format" . $this->schema[$column]['type'] . "Hook")) {
 						$methodName = "format" . $this->schema[$column] . "Hook";
 						$value = $this->$methodName($value);
 					}
