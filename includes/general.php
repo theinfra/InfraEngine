@@ -397,3 +397,39 @@ function app_strtolower($str)
 		return strtolower($str);
 	}
 }
+
+function AddLog($logmsg = "", $logseverity = APP_SEVERITY_ERROR, $logmodule = "php"){
+	if(trim($logmsg) == ""){
+		$logmsg = GetLang("ErrorMsgGeneric");
+	}
+	
+	$log = array(
+		'logmsg' => $logmsg,
+		'logseverity' => $logseverity,
+		'logmodule' => $logmodule,
+		'logdate' => microtime(true),
+	);
+	
+	$logmodel = GetModel('log');
+	$logid = $logmodel->add($log);
+}
+
+function AddLogError($logmsg = "", $logmodule = "php"){
+	AddLog($logmsg, APP_SEVERITY_ERROR, $logmodule);
+}
+
+function AddLogWarning($logmsg = "", $logmodule = "php"){
+	AddLog($logmsg, APP_SEVERITY_WARNING, $logmodule);
+}
+
+function AddLogNotice($logmsg = "", $logmodule = "php"){
+	AddLog($logmsg, APP_SEVERITY_NOTICE, $logmodule);
+}
+
+function AddLogDebug($logmsg = "", $logmodule = "php"){
+	AddLog($logmsg, APP_SEVERITY_DEBUG, $logmodule);
+}
+
+function AddLogSuccess($logmsg = "", $logmodule = "php"){
+	AddLog($logmsg, APP_SEVERITY_SUCCESS, $logmodule);
+}
