@@ -96,6 +96,11 @@ class Db {
 		$this->_ErrorLevel = $errorlevel;
 	}
 	
+	function Error()
+	{
+		return $this->_Error;
+	}
+	
 	function GetError(){
 		return $this->_Error;
 	}
