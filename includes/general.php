@@ -398,20 +398,68 @@ function app_strtolower($str)
 	}
 }
 
+function GetLogTrace($die=false, $return=true){
+	$trace = debug_backtrace();
+	$backtrace = "<table style=\"width: 100%; margin: 10px 0; border: 1px solid #aaa; border-collapse: collapse; border-bottom: 0;\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">\n";
+	$backtrace .= "<thead><tr>\n";
+	$backtrace .= "<th style=\"border-bottom: 1px solid #aaa; background: #ccc; padding: 4px; text-align: left; font-size: 11px;\">File</th>\n";
+	$backtrace .= "<th style=\"border-bottom: 1px solid #aaa; background: #ccc; padding: 4px; text-align: left; font-size: 11px;\">Line</th>\n";
+	$backtrace .= "<th style=\"border-bottom: 1px solid #aaa; background: #ccc; padding: 4px; text-align: left; font-size: 11px;\">Function</th>\n";
+	$backtrace .= "</tr></thead>\n<tbody>\n";
+	
+	// Strip off last item (the call to this function)
+	array_shift($trace);
+	array_shift($trace);
+	
+	foreach ($trace as $call) {
+		if (!isset($call['file'])) {
+			$call['file'] = "[PHP]";
+		}
+		if (!isset($call['line'])) {
+			$call['line'] = "&nbsp;";
+		}
+		if (isset($call['class'])) {
+			$call['function'] = $call['class'].$call['type'].$call['function'];
+		}
+		if(function_exists('textmate_backtrace')) {
+			$call['file'] .= " <a href=\"txmt://open?url=file://".$call['file']."&line=".$call['line']."\">[Open in TextMate]</a>";
+		}
+		$backtrace .= "<tr>\n";
+		$backtrace .= "<td style=\"font-size: 11px; padding: 4px; border-bottom: 1px solid #ccc;\">{$call['file']}</td>\n";
+		$backtrace .= "<td style=\"font-size: 11px; padding: 4px; border-bottom: 1px solid #ccc;\">{$call['line']}</td>\n";
+		$backtrace .= "<td style=\"font-size: 11px; padding: 4px; border-bottom: 1px solid #ccc;\">{$call['function']}</td>\n";
+		$backtrace .= "</tr>\n";
+	}
+	$backtrace .= "</tbody></table>\n";
+	if (!$return) {
+		echo $backtrace;
+		if ($die === true) {
+			die();
+		}
+	} else {
+		return $backtrace;
+	}
+}
+
 function AddLog($logmsg = "", $logseverity = APP_SEVERITY_ERROR, $logmodule = "php"){
 	if(trim($logmsg) == ""){
 		$logmsg = GetLang("ErrorMsgGeneric");
 	}
 	
-	$log = array(
-		'logmsg' => $logmsg,
-		'logseverity' => $logseverity,
-		'logmodule' => $logmodule,
-		'logdate' => microtime(true),
-	);
-	
+	$log = array();
+	$log['logsummary'] = substr($logmsg, 0, 50);
+	$log['logmsg'] = $logmsg . GetLogTrace();
+	$log['logseverity'] = $logseverity;
+	$log['logmodule'] = $logmodule;
+	$log['logdate'] = microtime(true);
+
 	$logmodel = GetModel('log');
 	$logid = $logmodel->add($log);
+	
+	if(!$logid){
+		print $logmodel->getError();
+		die();
+	}
 }
 
 function AddLogError($logmsg = "", $logmodule = "php"){

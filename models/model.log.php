@@ -21,6 +21,11 @@ class APPMODEL_LOG extends APPMODELBASE
 							"auto_increment" => true,
 							"null" => false,
 						),
+				"logsummary" => array(
+						"type" => "varchar",
+						"size" => "50",
+						"null" => false,
+				),
 				"logmsg" => array(
 						"type" => "text",
 						"null" => false,
@@ -49,7 +54,8 @@ class APPMODEL_LOG extends APPMODELBASE
 		$searchFields = array(
 				"logseverity",
 				"logdate",
-				"logmodule",	
+				"logmodule",
+				"logsummary",
 		);
 		
 		$customKeyName = array();
