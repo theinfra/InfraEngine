@@ -30,13 +30,20 @@ if(!$GLOBALS['APP_CLASS_DB']->connection){
 	exit;
 }
 
-$file = APP_BASE_PATH.DIRECTORY_SEPARATOR.'language'.DIRECTORY_SEPARATOR.GetConfig('language').DIRECTORY_SEPARATOR.'common.ini';
-$vars = parse_ini_file($file);
+$langfiles = array(
+	'common',
+	'users',
+);
 
-if (isset($GLOBALS['APP_LANG'])) {
-	$GLOBALS['APP_LANG'] = array_merge($GLOBALS['ISC_LANG'], $vars);
-} else {
-	$GLOBALS['APP_LANG'] = $vars;
+foreach($langfiles as $filename){
+	$file = APP_BASE_PATH.DIRECTORY_SEPARATOR.'language'.DIRECTORY_SEPARATOR.GetConfig('language').DIRECTORY_SEPARATOR.$filename.'.ini';
+	$vars = parse_ini_file($file);
+
+	if (isset($GLOBALS['APP_LANG'])) {
+		$GLOBALS['APP_LANG'] = array_merge($GLOBALS['APP_LANG'], $vars);
+	} else {
+		$GLOBALS['APP_LANG'] = $vars;
+	}
 }
 
 if(PHP_SAPI === 'cli'){
