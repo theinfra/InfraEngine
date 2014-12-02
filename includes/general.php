@@ -98,56 +98,54 @@ function redirectAdminAction($request){
 }
 
 function redirectRequest(){
-	$request = parseGetVars();
+	$GLOBALS['AppRequestVars'] = parseGetVars();
 	
-	if(isset($request['adminaction']) && trim($request['adminaction']) != ''){
-		redirectAdminAction($request);
+	if(isset($GLOBALS['AppRequestVars']['adminaction']) && trim($GLOBALS['AppRequestVars']['adminaction']) != ''){
+		redirectAdminAction($GLOBALS['AppRequestVars']);
 		exit;
 	}
 
-	if(isset($request[0]) && trim($request[0]) != ''){
-		$handler = strtolower($request[0]);
+	if(isset($GLOBALS['AppRequestVars'][0]) && trim($GLOBALS['AppRequestVars'][0]) != ''){
+		$handler = strtolower($GLOBALS['AppRequestVars'][0]);
 	}
 	else {
 		$handler = 'index';
 	}
 
-	if(isset($request[1]) && trim($request[1]) != ''){
-		$action = strtolower($request[1]);
-	}
-	else {
-		$action = 'view';
+	if(!isset($GLOBALS['AppRequestVars'][1]) || trim($GLOBALS['AppRequestVars'][1]) == ''){
+		$GLOBALS['AppRequestVars'][1] = 'view';
 	}
 
-	$controller = getController($handler);
-	if(method_exists($controller, $action)){
+	$controller = getController($GLOBALS['AppRequestVars'][0]);
+	if(method_exists($controller, $GLOBALS['AppRequestVars'][1])){
+		$action = $GLOBALS['AppRequestVars'][1];
 		$controller->$action();
 	}
 	else if (method_exists($controller, 'view')){
 		$controller->view();
 	}
 	else {
-		print "no hay el metodo ".$action." de la clase ".$handler." ni tampoco su metodo view por omisión";
+		print "no hay el metodo ".$GLOBALS['AppRequestVars'][1]." de la clase ".$GLOBALS['AppRequestVars'][0]." ni tampoco su metodo view por omisión";
 		exit;
 	}
 	
 	$viewname = '';
-	if($action == 'view'){
-		if(file_exists(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$handler.'.view.tpl')){
-			$viewname = $handler.'.view';
+	if($GLOBALS['AppRequestVars'][1] == 'view'){
+		if(file_exists(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$GLOBALS['AppRequestVars'][0].'.view.tpl')){
+			$viewname = $GLOBALS['AppRequestVars'][0].'.view';
 		}
 		else{
-			$viewname = $handler;
+			$viewname = $GLOBALS['AppRequestVars'][0];
 		}
 	}
 	else {
-		$viewname = $handler.'.'.$action;
+		$viewname = $GLOBALS['AppRequestVars'][0].'.'.$GLOBALS['AppRequestVars'][1];
 	}
 	
 	if(!file_exists(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$viewname.".tpl")){
 		$viewname = 'default';
 	}
-	
+
 	$GLOBALS['APP_CLASS_VIEW']->parseView($viewname);
 
 }
