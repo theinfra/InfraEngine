@@ -3,13 +3,13 @@
 class PANEL_HEADERFLASHMESSAGES extends AppPanel {
 	
 	public function SetPanelSettings(){
-		if(!isset($GLOBALS['APP_MESSAGES']) || !is_array($GLOBALS['APP_MESSAGES']) || empty($GLOBALS['APP_MESSAGES'])){
+		if(!isset($_SESSION['APP_MESSAGES']) || !is_array($_SESSION['APP_MESSAGES']) || empty($_SESSION['APP_MESSAGES'])){
 			$this->DontDisplay = true;
 			return;
 		}
 		
 		$panel = '';
-		foreach($GLOBALS['APP_MESSAGES'] as $msg){
+		foreach($_SESSION['APP_MESSAGES'] as $msg){
 			switch ($msg['sev']) {
 				case APP_SEVERITY_SUCCESS :
 					$GLOBALS['HeaderFlashMessageType'] = 'Success';
@@ -38,5 +38,6 @@ class PANEL_HEADERFLASHMESSAGES extends AppPanel {
 		}
 		
 		$GLOBALS['HeaderFlashMessagesContent'] = $panel;
+		$_SESSION['APP_MESSAGES'] = array();
 	}
 }

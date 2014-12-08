@@ -6,14 +6,23 @@ define('APP_SEVERITY_WARNING', 2);
 define('APP_SEVERITY_NOTICE', 3);
 define('APP_SEVERITY_DEBUG', 4);
 
-function print_array($array, $nopre = false){
+function print_array($array, $nopre = false, $return = false){
 	if(!is_array($array)){
 		$array = array($array);
 	}
-
-	if(!$nopre) print "<pre>";
-	print_r($array);
-	if(!$nopre) print "</pre>";
+	
+	if(!$return) {
+		if(!$nopre) print "<pre>";
+		print_r($array);
+		if(!$nopre) print "</pre>";
+	}
+	else {
+		$return = "";
+		if(!$nopre) $return .= "<pre>";
+		$return .= print_r($array, $return);
+		if(!$nopre) $return .= "</pre>";
+		return $return;
+	}
 }
 
 function getController($controller){
@@ -124,10 +133,12 @@ function redirectRequest(){
 	else if (method_exists($controller, 'view')){
 		$controller->view();
 	}
+	/*
 	else {
 		print "no hay el metodo ".$GLOBALS['AppRequestVars'][1]." de la clase ".$GLOBALS['AppRequestVars'][0]." ni tampoco su metodo view por omisión";
 		exit;
 	}
+	*/
 	
 	$viewname = '';
 	if($GLOBALS['AppRequestVars'][1] == 'view'){
@@ -210,27 +221,27 @@ function GetLang($name){
 }
 
 function flashMessage($msg, $severity = APP_SEVERITY_ERROR){
-	if(!isset($GLOBALS['APP_MESSAGES'])){
-		$GLOBALS['APP_MESSAGES'] = array();
+	if(!isset($_SESSION['APP_MESSAGES'])){
+		$_SESSION['APP_MESSAGES'] = array();
 	}
 	
-	$GLOBALS['APP_MESSAGES'][] = array(
+	$_SESSION['APP_MESSAGES'][] = array(
 		'msg' => $msg,
 		'sev' => $severity,
 	);
 }
 
 function emptyFlashMessages(){
-	$GLOBALS['APP_MESSAGES'] = array();
+	$_SESSION['APP_MESSAGES'] = array();
 }
 
 function checkFlashMessages($severity = false){
-	if(empty($GLOBALS['APP_MESSAGES'])) {
+	if(empty($_SESSION['APP_MESSAGES'])) {
 		return false;
 	}
 	else {
 		if(in_array($severity, array(APP_SEVERITY_DEBUG, APP_SEVERITY_ERROR, APP_SEVERITY_NOTICE, APP_SEVERITY_WARNING))){
-			foreach ($GLOBALS['APP_MESSAGES'] as $msg){
+			foreach ($_SESSION['APP_MESSAGES'] as $msg){
 				if($msg['sev'] == $severity){
 					return true;
 				}
@@ -406,8 +417,8 @@ function GetLogTrace($die=false, $return=true){
 	$backtrace .= "</tr></thead>\n<tbody>\n";
 	
 	// Strip off last item (the call to this function)
-	array_shift($trace);
-	array_shift($trace);
+	//array_shift($trace);
+	//array_shift($trace);
 	
 	foreach ($trace as $call) {
 		if (!isset($call['file'])) {
@@ -478,4 +489,221 @@ function AddLogDebug($logmsg = "", $logmodule = "php"){
 
 function AddLogSuccess($logmsg = "", $logmodule = "php"){
 	AddLog($logmsg, APP_SEVERITY_SUCCESS, $logmodule);
+}
+
+function app_substr_count($haystack, $needle)
+{
+	if(function_exists("mb_substr_count")) {
+		return mb_substr_count($haystack, $needle);
+	}
+	else {
+		return substr_count($haystack, $needle);
+	}
+}
+
+function app_strpos($haystack, $needle, $offset=0)
+{
+	if(function_exists("mb_strpos")) {
+		return mb_strpos($haystack, $needle, $offset);
+	}
+	else {
+		return strpos($haystack, $needle, $offset);
+	}
+}
+
+function app_substr($str, $start, $length=0)
+{
+	if(function_exists("mb_substr")) {
+		if($length == 0) {
+			return mb_substr($str, $start);
+		}
+		else {
+			return mb_substr($str, $start, $length);
+		}
+	}
+	else {
+		if($length == 0) {
+			return substr($str, $start);
+		}
+		else {
+			return substr($str, $start, $length);
+		}
+	}
+}
+
+function is_email_address($email)
+{
+	// If the email is empty it can't be valid
+	if (empty($email)) {
+		return false;
+	}
+
+	// If the email doesnt have exactle 1 @ it isnt valid
+	if (app_substr_count($email, '@') != 1) {
+		return false;
+	}
+
+	$matches = array();
+	$local_matches = array();
+	preg_match(':^([^@]+)@([a-zA-Z0-9\-][a-zA-Z0-9\-\.]{0,254})$:', $email, $matches);
+
+	if (count($matches) != 3) {
+		return false;
+	}
+
+	$local = $matches[1];
+	$domain = $matches[2];
+
+	// If the local part has a space but isnt inside quotes its invalid
+	if (app_strpos($local, ' ') && (app_substr($local, 0, 1) != '"' || app_substr($local, -1, 1) != '"')) {
+		return false;
+	}
+
+	// If there are not exactly 0 and 2 quotes
+	if (app_substr_count($local, '"') != 0 && app_substr_count($local, '"') != 2) {
+		return false;
+	}
+
+	// if the local part starts or ends with a dot (.)
+	if (app_substr($local, 0, 1) == '.' || app_substr($local, -1, 1) == '.') {
+		return false;
+	}
+
+	// If the local string doesnt start and end with quotes
+	if ((app_strpos($local, '"') || app_strpos($local, ' ')) && (app_substr($local, 0, 1) != '"' || app_substr($local, -1, 1) != '"')) {
+		return false;
+	}
+
+	preg_match(':^([\ \"\w\!\#\$\%\&\'\*\+\-\/\=\?\^\_\`\{\|\}\~\.]{1,64})$:', $local, $local_matches);
+
+	// Check the domain has at least 1 dot in it
+	if (app_strpos($domain, '.') === false) {
+		return false;
+	}
+
+	if (!empty($local_matches) ) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function appGeneratePasswordHash($password, $salt){
+	return hash('sha512', $salt.'-'.$password);
+}
+
+function formatDateSpanish($time, $short = true, $dayofweek = false){
+	$days = array(
+		'Lunes',
+		'Martes',
+		'Miercoles',
+		'Jueves',
+		'Viernes',
+		'Sabado',
+		'Domingo',
+	);
+	
+	$shortdays = array(
+			'Lun',
+			'Mar',
+			'Mie',
+			'Jue',
+			'Vie',
+			'Sab',
+			'Dom',
+	);
+	
+	$months = array(
+		1 => 'Enero',
+		2 => 'Febrero',
+		3 => 'Marzo',
+		4 => 'Abril',
+		5 => 'Mayo',
+		6 => 'Junio',
+		7 => 'Julio',
+		8 => 'Agosto',
+		9 => 'Septiembre',
+		10 => 'Octubre',
+		11 => 'Noviembre',
+		12 => 'Diciembre',
+	);
+	
+	$shortmonths = array(
+			1 => 'Ene',
+			2 => 'Feb',
+			3 => 'Mar',
+			4 => 'Abr',
+			5 => 'May',
+			6 => 'Jun',
+			7 => 'Jul',
+			8 => 'Ago',
+			9 => 'Sep',
+			10 => 'Oct',
+			11 => 'Nov',
+			12 => 'Dic',
+	);
+	
+	if($short){
+		if($dayofweek)
+		{
+			return $shortdays[date('w')].' '.date('j').'-'.$shortmonths[date('n')].'-'.date('Y');
+		} 
+		else {
+			return date('j').'-'.$shortmonths[date('n')].'-'.date('Y');
+		}
+	}
+	else {
+		if($dayofweek)
+		{
+			return $days[date('w')].' '.date('j').' de '.$months[date('n')].' '.date('Y');
+		}
+		else {
+			return date('j').' de '.$months[date('n')].' '.date('Y');
+		}
+	}
+}
+
+function is_associative_array($array)
+{
+	if (!is_array($array) || empty($array)) {
+		return false;
+	}
+
+	$keys = array_keys($array);
+	$total = count($keys);
+	$filtered = array_filter($keys, "app_is_int");
+
+	if (count($filtered) == $total) {
+		return false;
+	}
+
+	return true;
+}
+
+function overwritePostToGlobalVars($source = "post"){
+	if($source == "post") $source = $_POST;
+
+	if(!is_array($source) || empty($source)){
+		return;
+	}
+
+	foreach($source as $key => $val){
+		$GLOBALS[$key] = $val;
+		$GLOBALS[$key.$val."selected"] = 'selected="selected"';
+	}
+}
+
+function app_mkdir($pathname, $mode = "0644", $recursive = false)
+{
+	if (is_string($mode)) {
+		$mode = octdec($mode);
+	}
+
+	$old = umask(0);
+
+	$result = @mkdir($pathname, $mode, $recursive);
+
+	umask($old);
+
+	return $result;
 }
