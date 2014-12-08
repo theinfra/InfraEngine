@@ -1,0 +1,1 @@
+<script src="%%GLOBAL_AppPath%%/javascript/jquery-1.11.0.min.js"></script>
