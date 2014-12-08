@@ -202,6 +202,9 @@ class APPMODELBASE
 	 */
 	public function get($nodeId)
 	{
+		if(!is_array($nodeId)){
+			$nodeId = array($nodeId);
+		}
 		$whereClause = $this->buildPrimaryKeyClause($nodeId);
 
 		if (trim($whereClause) == "") {
@@ -233,7 +236,7 @@ class APPMODELBASE
 		return $node;
 	}
 	
-	public function getResultSet($offset = 0, $amount = 10, $where = array(), $columns = array()){
+	public function getResultSet($offset = 0, $amount = 10, $where = array(), $order = array(), $columns = array()){
 		$query = "SELECT";
 		if(!is_array($columns) || empty($columns)){
 			$query .= " *";
@@ -251,6 +254,21 @@ class APPMODELBASE
 			}
 		}
 		
+		if(is_array($order) && !empty($order)){
+			foreach($order as $col => $dir){
+				if(!in_array(strtoupper($dir), array("DESC", "DES", "ASC")) || !in_array($col, array_keys($this->schema))){
+					unset($order[$col]);
+				}
+			}
+			if(!empty($order)){
+				$query .= " ORDER BY ";
+				foreach($order as $col => $dir){
+					$query .= $col . " ".$dir. ", ";
+				}
+				$query = substr($query, 0, strlen($query)-2);
+			}
+		}
+		
 		if(is_int($offset)){
 			if(is_int($amount)){
 				$query .= " LIMIT ".$offset. ", ".$amount;
@@ -265,7 +283,7 @@ class APPMODELBASE
 		else {
 			$query .= " LIMIT 0, 10";
 		}
-
+		
 		$result = $this->db->Query($query);
 		if(!$result){
 			return array();
@@ -360,11 +378,13 @@ class APPMODELBASE
 	 * @param mixed $nodeId The database record id - note this is written internally to work with arrays but pre- and postHooks are NOT so they will fail - use ids only only until this is fixed
 	 * @return bool TRUE if the record was successfully updated, FALSE on error
 	 */
-	public function edit($input, $nodeId=null)
+	public function edit($input, $nodeId/*=null*/)
 	{
-		if (trim($nodeId) == "" && is_string($this->primaryKeyName) && array_key_exists($this->primaryKeyName, $input)) {
+		/*
+		if (trim($nodeId) == "" && is_array($this->primaryKeyName) && array_key_exists($this->primaryKeyName, $input)) {
 			$nodeId = $input[$this->primaryKeyName];
 		}
+		*/
 
 		$whereClause = $this->buildPrimaryKeyClause($nodeId);
 
@@ -425,7 +445,7 @@ class APPMODELBASE
 			$GLOBALS["APP_CLASS_DB"]->CommitTransaction();
 		}
 
-		return $nodeId;
+		return true;
 	}
 
 	/**
@@ -440,6 +460,10 @@ class APPMODELBASE
 	 */
 	public function delete($nodeId, $extraOption=false)
 	{
+		if(!is_array($nodeId)){
+			$nodeId = array($nodeId);
+		}
+		
 		$whereClause = $this->buildPrimaryKeyClause($nodeId);
 
 		if (trim($whereClause) == "") {
