@@ -60,6 +60,16 @@ function getModel($modelname){
 	}
 }
 
+function getLib($libname){
+	$libfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'lib.'.$libname.'.php';
+	if($libname != '' and file_exists($libfile)){
+		include_once $libfile;
+		$lib = 'APPLIB_'.strtoupper($libname);
+		$lib = new $lib();
+		return $lib;
+	}
+}
+
 function getAdminAction($actionname){
 	$actionfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'adminaction'.DIRECTORY_SEPARATOR.'action.'.$actionname.'.php';
 	if($actionname != '' and file_exists($actionfile)){
