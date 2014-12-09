@@ -109,6 +109,11 @@ function redirectAdminAction($request){
 function redirectRequest(){
 	$GLOBALS['AppRequestVars'] = parseGetVars();
 	
+	if(empty($GLOBALS["AppRequestVars"])){
+		$GLOBALS['AppRequestVars'][0] = "index";
+		$GLOBALS['AppRequestVars'][1] = "view";
+	}
+	
 	if(isset($GLOBALS['AppRequestVars']['adminaction']) && trim($GLOBALS['AppRequestVars']['adminaction']) != ''){
 		redirectAdminAction($GLOBALS['AppRequestVars']);
 		exit;
