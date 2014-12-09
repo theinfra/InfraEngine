@@ -23,11 +23,13 @@ if(isset($_SERVER['HTTP_HOST']) && isset($_SERVER['SCRIPT_NAME'])){
 	$GLOBALS['AppSubDir'] = str_replace('index.php', '', $_SERVER['SCRIPT_NAME']);
 }
 
-$GLOBALS['APP_CLASS_DB'] = new Db(GetConfig('db_host'), GetConfig('db_user'), GetConfig('db_pwd'), GetConfig('db_name'));
+if(!GetConfig("nodb")){
+	$GLOBALS['APP_CLASS_DB'] = new Db(GetConfig('db_host'), GetConfig('db_user'), GetConfig('db_pwd'), GetConfig('db_name'));
 
-if(!$GLOBALS['APP_CLASS_DB']->connection){
-	print "Error al conectarse a la base de datos. ".$GLOBALS['APP_CLASS_DB']->GetError();
-	exit;
+	if(!$GLOBALS['APP_CLASS_DB']->connection){
+		print "Error al conectarse a la base de datos. ".$GLOBALS['APP_CLASS_DB']->GetError();
+		exit;
+	}
 }
 
 $langfiles = array(
