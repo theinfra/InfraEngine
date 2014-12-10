@@ -18,7 +18,7 @@ class APPLIB_IMAGEIMPORTER {
 	
 	function copyOrig($destination){
 		if(!is_dir($destination)){
-			app_mkdir($destination, "0644", true);
+			app_mkdir($destination, null, true);
 		}
 		
 		copy($this->basefile, $destination.DIRECTORY_SEPARATOR.$this->filename);
