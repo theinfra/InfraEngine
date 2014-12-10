@@ -726,3 +726,20 @@ function app_mkdir($pathname, $mode = "", $recursive = false)
 
 	return $result;
 }
+
+function app_chmod($file, $mode)
+{
+	if (DIRECTORY_SEPARATOR!=='/') {
+		return true;
+	}
+
+	if (is_string($mode)) {
+		$mode = octdec($mode);
+	}
+
+	$old_umask = umask();
+	umask(0);
+	$result = @chmod($file, $mode);
+	umask($old_umask);
+	return $result;
+}
