@@ -708,8 +708,12 @@ function overwritePostToGlobalVars($source = "post"){
 	}
 }
 
-function app_mkdir($pathname, $mode = "0644", $recursive = false)
+function app_mkdir($pathname, $mode = "", $recursive = false)
 {
+	if(trim($mode) == ""){
+		$mode = fileperms(APP_BASE_PATH);
+	}
+	
 	if (is_string($mode)) {
 		$mode = octdec($mode);
 	}
