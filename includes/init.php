@@ -32,13 +32,14 @@ if(!GetConfig("nodb")){
 	}
 }
 
-$langfiles = array(
-	'common',
-	'users',
-);
+$langfiles = scandir(APP_BASE_PATH.DIRECTORY_SEPARATOR.'language'.DIRECTORY_SEPARATOR.GetConfig('language').DIRECTORY_SEPARATOR);
 
 foreach($langfiles as $filename){
-	$file = APP_BASE_PATH.DIRECTORY_SEPARATOR.'language'.DIRECTORY_SEPARATOR.GetConfig('language').DIRECTORY_SEPARATOR.$filename.'.ini';
+	if(!preg_match("/\.ini$/", $filename)){
+		continue;
+	}
+
+	$file = APP_BASE_PATH.DIRECTORY_SEPARATOR.'language'.DIRECTORY_SEPARATOR.GetConfig('language').DIRECTORY_SEPARATOR.$filename;
 	$vars = parse_ini_file($file);
 
 	if (isset($GLOBALS['APP_LANG'])) {
