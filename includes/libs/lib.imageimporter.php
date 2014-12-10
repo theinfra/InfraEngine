@@ -24,7 +24,7 @@ class APPLIB_IMAGEIMPORTER {
 		return true;
 	}
 	
-	function copyOrig($destination){
+	function copyOrig($destination, $overrideName = ""){
 		if(!$this->isLoaded){
 			return false;	
 		}
@@ -33,7 +33,12 @@ class APPLIB_IMAGEIMPORTER {
 			app_mkdir($destination, null, true);
 		}
 		
-		copy($this->basefile, $destination.DIRECTORY_SEPARATOR.$this->filename);
+		$filename = $this->filename;
+		if(trim($overrideName) != ""){
+			$filename = $overrideName;
+		}
+		
+		copy($this->basefile, $destination.DIRECTORY_SEPARATOR.$filename);
 	}
 	
 	function getFileExt(){
@@ -97,7 +102,7 @@ class APPLIB_IMAGEIMPORTER {
 		return @imagesy($srcImg);
 	}
 	
-	function createImageResize($destFile, $width, $height){
+	function createImageResize($destFile, $width, $height = null){
 		if(!$this->isLoaded){
 			return false;
 		}
@@ -123,21 +128,10 @@ class APPLIB_IMAGEIMPORTER {
 		$srcHeight = @imagesy($srcImg);
 		
 		// Make sure the dest has a constant height
-		$destWidth = $width;
-		$destHeight = $height;
-		/*
-		if($width > $AutodestSize) {
-			$destWidth = $AutodestSize;
-			$destHeight = ceil(($height*(($AutodestSize*100)/$width))/100);
-			$height = $destHeight;
-			$width = $destWidth;
+
+		if($height == null){
+			$height = $srcHeight * ($width / $srcWidth);
 		}
-		
-		if($height > $AutodestSize) {
-			$destHeight = $AutodestSize;
-			$destWidth = ceil(($width*(($AutodestSize*100)/$height))/100);
-		}
-		*/
 		
 		$destimg = imagecreatetruecolor($width, $height);
 		if($ext == "gif" && !isset($gifHack)) {
@@ -151,11 +145,11 @@ class APPLIB_IMAGEIMPORTER {
 			@imagealphablending($destimg, false);
 		}
 				
-		imagecopyresampled($destimg, $srcImg, 0, 0, 0, 0, $destWidth, $destHeight, $srcWidth, $srcHeight);
+		imagecopyresampled($destimg, $srcImg, 0, 0, 0, 0, $width, $height, $srcWidth, $srcHeight);
 		
-		if ($ext == "jpg") {
+		//if ($ext == "jpg") {
 			@imagejpeg($destimg, $destFile, 100);
-		} else if($ext == "gif") {
+		/*} else if($ext == "gif") {
 			if(isset($gifHack) && $gifHack == true) {
 				$destFile = isc_substr($destFile, 0, -3)."jpg";
 				@imagejpeg($destimg, $destFile, 100);
@@ -166,7 +160,7 @@ class APPLIB_IMAGEIMPORTER {
 		} else {
 			@imagepng($destimg, $destFile);
 		}
-		
+		*/
 		app_chmod($destFile, "0644");
 		
 		return $destFile;
