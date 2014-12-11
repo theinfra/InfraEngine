@@ -269,19 +269,24 @@ class APPMODELBASE
 			}
 		}
 		
-		if(is_int($offset)){
-			if(is_int($amount)){
-				$query .= " LIMIT ".$offset. ", ".$amount;
-			}
-			else {
-				$query .= " LIMIT ".$offset. ", 10";
-			}
-		}
-		else if(is_int($amount)){
-			$query .= " LIMIT 0, ".$amount;
+		if ($amount == "*"){
+			$query .= "";
 		}
 		else {
-			$query .= " LIMIT 0, 10";
+			if(is_int($offset)){
+				if(is_int($amount)){
+					$query .= " LIMIT ".$offset. ", ".$amount;
+				}
+				else {
+					$query .= " LIMIT ".$offset. ", 10";
+				}
+			}
+			else if(is_int($amount)){
+				$query .= " LIMIT 0, ".$amount;
+			}
+			else {
+				$query .= " LIMIT 0, 10";
+			}
 		}
 		
 		$result = $this->db->Query($query);
