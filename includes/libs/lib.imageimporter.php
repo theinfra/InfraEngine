@@ -30,7 +30,9 @@ class APPLIB_IMAGEIMPORTER {
 		}
 		
 		if(!is_dir($destination)){
-			app_mkdir($destination, null, true);
+			if(!app_mkdir($destination, null, true)){
+				return false;
+			}
 		}
 		
 		$filename = $this->filename;
