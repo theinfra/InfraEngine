@@ -149,10 +149,10 @@ function redirectRequest(){
 		$action = $GLOBALS['AppRequestVars'][1];
 		$controller->$action();
 	}
+	/*
 	else if (method_exists($controller, 'view')){
 		$controller->view();
 	}
-	/*
 	else {
 		print "no hay el metodo ".$GLOBALS['AppRequestVars'][1]." de la clase ".$GLOBALS['AppRequestVars'][0]." ni tampoco su metodo view por omisión";
 		exit;
@@ -306,8 +306,11 @@ function getUser($userid = false){
 
 }
 
-function cryptPassword($user, $password, $salt){
-	return hash('sha512', $user.$password.$salt);
+function appGenerateUserToken()
+{
+	$rnd = rand(1, 99999);
+	$uid = uniqid($rnd, true);
+	return $uid;
 }
 
 function formatPrice($price, $currencyid = ''){
