@@ -476,6 +476,58 @@ function GetLogTrace($die=false, $return=true){
 	}
 }
 
+function HandlePHPErrors($errno, $errstr, $errfile, $errline)
+{
+	// Error reporting turned off (either globally or by @ before erroring statement)
+	if(error_reporting() == 0) {
+		return;
+	}
+
+	$msg = "$errstr in $errfile at $errline<br/>\n";
+	$msg .= trace(false,true);
+
+	// This switch uses case fallthrough's intentionally
+	switch ($errno) {
+		case E_USER_ERROR:
+		case E_ERROR:
+		case E_PARSE:
+		case E_CORE_ERROR:
+		case E_COMPILE_ERROR:
+			AddLog($msg, APP_SEVERITY_ERROR, 'php');
+			exit(1);
+			break;
+
+		case E_USER_WARNING:
+		case E_WARNING:
+		case E_CORE_WARNING:
+		case E_COMPILE_WARNING:
+			AddLog($msg, APP_SEVERITY_WARNING, 'php');
+			break;
+
+		case E_USER_NOTICE:
+		case E_NOTICE:
+			AddLog($msg, APP_SEVERITY_NOTICE, 'php');
+			break;
+
+		case E_STRICT:
+			//$this->LogSystemNotice('php', isc_substr($errstr, 0, 250), $msg);
+			break;
+
+		default:
+			AddLog($msg, APP_SEVERITY_NOTICE, 'php');
+			break;
+	}
+
+	// If we're stopping the default PHP error handler then we return true
+	if(GetConfig('HidePHPErrors') == 1) {
+		return true;
+	}
+	// Otherwise allow the PHP error handler to run after ours
+	else {
+		return false;
+	}
+}
+
 function AddLog($logmsg = "", $logseverity = APP_SEVERITY_ERROR, $logmodule = "php"){
 	if(trim($logmsg) == ""){
 		$logmsg = GetLang("ErrorMsgGeneric");

@@ -6,6 +6,8 @@ define('APP_BASE_PATH', dirname(realpath(dirname(__FILE__).'/../index.php')));
 include_once ''.APP_BASE_PATH.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php';
 include_once ''.APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'general.php';
 
+set_error_handler("HandlePHPErrors");
+
 if(!function_exists('mysql_connect')){
 	print "No hay soporte para MySQL.";
 	exit;

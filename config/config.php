@@ -1,6 +1,8 @@
 <?php
 $GLOBALS['APP_CONFIG']['AuthSalt'] = 'algovaaqui';
 
+$GLOBALS['APP_CONFIG']['HidePHPErrors'] = false;
+
 $GLOBALS['APP_CONFIG']['language'] = 'es';
 
 $GLOBALS['APP_CONFIG']['nodb'] = true;
