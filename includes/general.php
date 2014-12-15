@@ -493,6 +493,9 @@ function HandlePHPErrors($errno, $errstr, $errfile, $errline)
 }
 
 function AddLog($logmsg = "", $logseverity = APP_SEVERITY_ERROR, $logmodule = "php"){
+	if(is_array($logmsg)){
+		$logmsg = print_array($logmsg, false, true);
+	}
 	if(trim($logmsg) == ""){
 		$logmsg = GetLang("ErrorMsgGeneric");
 	}
