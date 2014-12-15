@@ -277,42 +277,6 @@ function checkFlashMessages($severity = false){
 	return false;
 }
 
-function getUserData(){
-	static $user;
-	if(is_array($user)){
-		return $user;
-	}
-	
-	if(!isset($_SESSION)){
-		return false;
-	}
-	
-	if(!isset($_SESSION['userid'])){
-		return false;
-	}
-	
-	$user = $GLOBALS['APP_CLASS_DB']->FetchRow('SELECT * FROM users WHERE UsuarioId = "'.$_SESSION['userid'].'"');
-	return $user;
-	
-}
-
-function getUser($userid = false){
-	if(!$userid){
-		return false;
-	}
-
-	$user = $GLOBALS['APP_CLASS_DB']->FetchRow('SELECT * FROM users WHERE UsuarioId = "'.$userid.'"');
-	return $user;
-
-}
-
-function appGenerateUserToken()
-{
-	$rnd = rand(1, 99999);
-	$uid = uniqid($rnd, true);
-	return $uid;
-}
-
 function formatPrice($price, $currencyid = ''){
 	static $currencies;
 	static $defaultcurrencyid = '';
@@ -484,7 +448,7 @@ function HandlePHPErrors($errno, $errstr, $errfile, $errline)
 	}
 
 	$msg = "$errstr in $errfile at $errline<br/>\n";
-	$msg .= trace(false,true);
+	$msg .= GetLogTrace(false,true);
 
 	// This switch uses case fallthrough's intentionally
 	switch ($errno) {
