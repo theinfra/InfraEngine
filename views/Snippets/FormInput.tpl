@@ -1,1 +1,0 @@
-<input type="%%GLOBAL_FormInputType%%" name="%%GLOBAL_FormInputName%%" id="%%GLOBAL_FormInputId%%" value="%%GLOBAL_FormInputValue%%" class="%%GLOBAL_FormInputClass%%" %%GLOBAL_FormInputExtraHTML%% />

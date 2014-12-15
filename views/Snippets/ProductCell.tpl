@@ -1,1 +1,0 @@
-<td class="%%GLOBAL_ProductCellClass%%">%%GLOBAL_ProductColumnValue%%</td>

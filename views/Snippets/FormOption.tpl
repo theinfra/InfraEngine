@@ -1,1 +1,0 @@
-<option value="%%GLOBAL_SelectOptionValue%%" %%GLOBAL_SelectOptionSelected%%>%%GLOBAL_SelectOptionText%%</option>

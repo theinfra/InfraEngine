@@ -1,1 +1,0 @@
-<th class="%%GLOBAL_HeaderClass%%">%%GLOBAL_ProductHeaderValue%%</th>
