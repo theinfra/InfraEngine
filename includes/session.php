@@ -121,3 +121,48 @@ function AppUnsetCookie($name)
 {
 	AppSetCookie($name, "", 1);
 }
+
+function UserHasAccess($url){
+
+	if(trim($url) == ""){
+		return false;
+	}
+	
+	$user = getUserData();
+	
+	if(!$user){
+		$user = array(
+			"usergroup" => 0,
+		);
+	}
+	
+	$split = explode("/", $url);
+	
+	if(!isset($split[0])){
+		$split = array(
+			"index",
+			"view",
+		);
+	}
+	
+	if(!isset($split[1])){
+		$split[1] = "view";
+	}
+
+	$controller = getController($split[0]);
+	
+	if(!is_object($controller)){
+		return false;
+	}
+	
+	if(!method_exists($controller, $split[1]) || !isset($controller->menu) || !isset($controller->menu[$split[1]])){
+		return false;
+	}
+
+	if($user["usergroup"] >= $controller->menu[$split[1]]){
+		return true;
+	}
+	else {
+		return false;
+	}
+}
