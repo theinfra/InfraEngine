@@ -148,6 +148,15 @@ function redirectRequest(){
 	$GLOBALS["ViewStylesheet"] = "";
 	$GLOBALS["ViewScripts"] = "";
 	$controller = getController($GLOBALS['AppRequestVars'][0]);
+	
+	if(isset($controller->menu) && isset($controller->menu[$GLOBALS["AppRequestVars"][1]])){
+		if(!UserHasAccess($GLOBALS["AppRequestVars"][0]."/".$GLOBALS["AppRequestVars"][1])){
+			flashMessage(GetLang("NotPermitted"), APP_SEVERITY_ERROR);
+			header("Location: ".$GLOBALS["AppPath"]."/");
+			exit;
+		}
+	}
+	
 	if(method_exists($controller, $GLOBALS['AppRequestVars'][1])){
 		$action = $GLOBALS['AppRequestVars'][1];
 		$controller->$action();
