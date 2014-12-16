@@ -26,6 +26,9 @@ function print_array($array, $nopre = false, $return = false){
 }
 
 function getController($controller){
+	if(trim($controller) == ""){
+		$controller = "index";
+	}
 	$controllerfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'controller.'.$controller.'.php';
 	if($controller != '' and file_exists($controllerfile)){
 		include_once $controllerfile;
