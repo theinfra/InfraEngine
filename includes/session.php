@@ -64,6 +64,12 @@ function isIPAddress($ipaddr)
 
 function AppSetCookie($name, $value = "", $expires = 0, $httpOnly=false)
 {
+	/*
+	 if (!isset($GLOBALS['CookiePath'])) {
+	$GLOBALS['CookiePath'] = $GLOBALS["AppPath"];
+	}
+	*/
+	
 	if(!isset($GLOBALS['CookieDomain'])) {
 		$host = "";
 		$url = parse_url(GetConfig('AppPath'), PHP_URL_HOST);
@@ -93,6 +99,9 @@ function AppSetCookie($name, $value = "", $expires = 0, $httpOnly=false)
 		$cookie .= sprintf("; expires=%s", @gmdate('D, d-M-Y H:i:s \G\M\T', $expires));
 	}
 
+	$path = parse_url(GetConfig('AppPath'), PHP_URL_PATH)."/";
+	$cookie .= sprintf("; path=%s", trim($path));
+	/*
 	if (isset($GLOBALS['CookiePath'])) {
 		if (substr($GLOBALS['CookiePath'], -1) != "/") {
 			$GLOBALS['CookiePath'] .= "/";
@@ -100,6 +109,7 @@ function AppSetCookie($name, $value = "", $expires = 0, $httpOnly=false)
 
 		$cookie .= sprintf("; path=%s", trim($GLOBALS['CookiePath']));
 	}
+	*/
 
 	if (isset($GLOBALS['CookieDomain'])) {
 		$cookie .= sprintf("; domain=%s", $GLOBALS['CookieDomain']);
