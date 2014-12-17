@@ -99,7 +99,7 @@ function AppSetCookie($name, $value = "", $expires = 0, $httpOnly=false)
 		$cookie .= sprintf("; expires=%s", @gmdate('D, d-M-Y H:i:s \G\M\T', $expires));
 	}
 
-	$path = parse_url(GetConfig('AppPath'), PHP_URL_PATH)."/";
+	$path = parse_url($GLOBALS['AppPath'], PHP_URL_PATH)."/";
 	$cookie .= sprintf("; path=%s", trim($path));
 	/*
 	if (isset($GLOBALS['CookiePath'])) {
