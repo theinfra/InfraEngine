@@ -800,7 +800,7 @@ class APPMODELBASE
 	
 	public function checkModelSchema(){
 		if(!$GLOBALS["APP_CLASS_DB"]->tableExists($this->tableName)){
-			$GLOBALS['ADMINACTION_LOG']['UPDATEDB'][] = sprintf(GetLang('ErrorTableNotExists'), $this->tableName).APP_EOL;
+			$this->adminAction->addToLog(sprintf(GetLang('ErrorTableNotExists'), $this->tableName).APP_EOL);
 			
 			if(!$GLOBALS["APP_CLASS_DB"]->CreateTableForModel($this->tableName)){
 				$this->adminAction->addToLog(sprintf(GetLang('ErrorCreatingTable'), $this->tableName).':'.$GLOBALS["APP_CLASS_DB"]->GetError().APP_EOL);
