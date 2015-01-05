@@ -39,7 +39,8 @@ function getUser($userid = false){
 		return false;
 	}
 
-	$user = $GLOBALS['APP_CLASS_DB']->FetchRow('SELECT * FROM users WHERE UsuarioId = "'.$userid.'"');
+	$user_model = getModel("usuario");
+	$user = $user_model->get(array("userid" => $userid));
 	return $user;
 
 }
