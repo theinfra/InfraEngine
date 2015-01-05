@@ -460,7 +460,7 @@ function HandlePHPErrors($errno, $errstr, $errfile, $errline)
 	}
 
 	$msg = "$errstr in $errfile at $errline<br/>\n";
-	$msg .= GetLogTrace(false,true);
+	//$msg .= GetLogTrace(false,true);
 
 	// This switch uses case fallthrough's intentionally
 	switch ($errno) {
@@ -703,19 +703,19 @@ function formatDateSpanish($time, $short = true, $dayofweek = false){
 	if($short){
 		if($dayofweek)
 		{
-			return $shortdays[date('w')].' '.date('j').'-'.$shortmonths[date('n')].'-'.date('Y');
+			return $shortdays[date('w', $time)].' '.date('j', $time).'-'.$shortmonths[date('n')].'-'.date('Y', $time);
 		} 
 		else {
-			return date('j').'-'.$shortmonths[date('n')].'-'.date('Y');
+			return date('j', $time).'-'.$shortmonths[date('n', $time)].'-'.date('Y', $time);
 		}
 	}
 	else {
 		if($dayofweek)
 		{
-			return $days[date('w')].' '.date('j').' de '.$months[date('n')].' '.date('Y');
+			return $days[date('w', $time)].' '.date('j', $time).' de '.$months[date('n', $time)].' '.date('Y', $time);
 		}
 		else {
-			return date('j').' de '.$months[date('n')].' '.date('Y');
+			return date('j', $time).' de '.$months[date('n', $time)].' '.date('Y', $time);
 		}
 	}
 }
