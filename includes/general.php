@@ -420,7 +420,7 @@ function GetLogTrace($die=false, $return=true){
 	
 	// Strip off last item (the call to this function)
 	//array_shift($trace);
-	//array_shift($trace);
+	array_shift($trace);
 	
 	foreach ($trace as $call) {
 		if (!isset($call['file'])) {
