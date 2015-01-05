@@ -342,7 +342,7 @@ class APPMODELBASE
 		/**
 		 * Do the insert
 		 */
-		$nodeId = $GLOBALS["APP_CLASS_DB"]->InsertQuery($this->tableName, $savedata);
+		$nodeId = $GLOBALS["APP_CLASS_DB"]->InsertQuery($this->tableName, $savedata, true);
 
 		if ($nodeId === false) {
 			$error = $GLOBALS["APP_CLASS_DB"]->Error();
