@@ -8,7 +8,7 @@ class APPCONTROLLER_LOG extends APP_BASE {
 	
 	function view(){
 		$logs = GetModel('log');
-		$logs = $logs->getResultSet(NULL, "*", NULL, array("logdate" => "DESC"));
+		$logs = $logs->getResultSet(NULL, "*", NULL, array("logdate" => "DESC", "logid" => "ASC"));
 		
 		$logtable = "<table width=\"95%\" align=\"center\">";
 		
