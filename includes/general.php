@@ -650,6 +650,10 @@ function appGeneratePasswordHash($password, $salt){
 }
 
 function formatDateSpanish($time, $short = true, $dayofweek = false){
+	if(is_null($time) || trim($time) == "" || !is_int($time)){
+		return "N/A";
+	}
+	
 	$days = array(
 		'Lunes',
 		'Martes',
