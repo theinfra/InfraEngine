@@ -253,6 +253,9 @@ class APPMODELBASE
 				$query .= " AND ".$field . " = '".$value."' ";
 			}
 		}
+		else {
+			$query .= " WHERE ".$where;
+		}
 		
 		if(is_array($order) && !empty($order)){
 			foreach($order as $col => $dir){
@@ -273,7 +276,7 @@ class APPMODELBASE
 			$query .= "";
 		}
 		else {
-			if(is_int($offset)){
+			if(is_numeric($offset)){
 				if(is_int($amount)){
 					$query .= " LIMIT ".$offset. ", ".$amount;
 				}
@@ -288,7 +291,7 @@ class APPMODELBASE
 				$query .= " LIMIT 0, 10";
 			}
 		}
-		
+
 		$result = $this->db->Query($query);
 		if(!$result){
 			return array();
