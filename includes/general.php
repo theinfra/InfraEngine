@@ -19,7 +19,7 @@ function print_array($array, $nopre = false, $return = false){
 	else {
 		$return = "";
 		if(!$nopre) $return .= "<pre>";
-		$return .= print_r($array, $return);
+		$return .= print_r($array, true);
 		if(!$nopre) $return .= "</pre>";
 		return $return;
 	}
