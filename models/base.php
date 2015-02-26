@@ -253,7 +253,7 @@ class APPMODELBASE
 				$query .= " AND ".$field . " = '".$value."' ";
 			}
 		}
-		else {
+		else if(is_string($where) && trim($where) != ""){
 			$query .= " WHERE ".$where;
 		}
 		
