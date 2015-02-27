@@ -789,3 +789,26 @@ function app_chmod($file, $mode)
 	umask($old_umask);
 	return $result;
 }
+
+
+function appGetMonthSelectOptions($selected = null){
+	if(is_null($selected)) $selected = date('m'); 
+	$return = "";
+	for($i=1;$i<=12;$i++){
+		$selectedText = ($selected == $i) ? "selected='selected'" : "";
+		$return .= "<option value='".$i."' ".$selectedText.">".ucfirst(strftime('%B', mktime(0, 0, 0, $i, 10)))."</option>";
+	}
+	
+	return $return;
+}
+
+function appGetYearSelectOptions($selected = null){
+	if(is_null($selected)) $selected = date('Y');
+	$return = "";
+	for($i=2014;$i<=2025;$i++){ //Empiezo en 2014 porque en este año se implemento la app
+		$selectedText = ($selected == $i) ? "selected='selected'" : "";
+		$return .= "<option value='".$i."' ".$selectedText.">".$i."</option>";
+	}
+	
+	return $return;
+}
