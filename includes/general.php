@@ -290,31 +290,23 @@ function checkFlashMessages($severity = false){
 }
 
 function formatPrice($price, $currencyid = ''){
-	static $currencies;
-	static $defaultcurrencyid = '';
-
-	if($defaultcurrencyid == ''){
-		$defaultcurrencyid = $GLOBALS['APP_CLASS_DB']->FetchOne('SELECT MonedaID FROM currencies WHERE MonedaOmision = "1"', 'MonedaID');
-	}
+	$currencies = GetConfig("Currencies");
 	
-	if($currencyid == ''){
-		$currencyid = $defaultcurrencyid;
+	if(!is_array($currencies) || empty($currencies)){
+		return $price;
 	}
 	
 	if(!isset($currencies[$currencyid])){
-		$currencies[$currencyid] = $GLOBALS['APP_CLASS_DB']->FetchRow('SELECT * FROM currencies WHERE MonedaID = "'.$currencyid.'"');
+		reset($currencies);
+		$currencyid = key($currencies);
 	}
 	
 	$currency = $currencies[$currencyid];
 	
-	$return = number_format($price, $currency['MonedaNumeroDecimales'], $currency['MonedaSimboloDecimal'], $currency['MonedaSimboloSeparadorMiles']);
+	$return = number_format($price, $currency['NumDecimals'], $currency['SymbolDecimals'], $currency['SymbolThou']);
 	
-	if($currency['MonedaPosicionSimbolo'] == 'DER'){
-		$return = $return . $currency['MonedaSimbolo'];
-	}
-	else {
-		$return = $currency['MonedaSimbolo'] . $return;
-	}
+	$return = $return . $currency['SymbolPost'];
+	$return = $currency['SymbolPre'] . $return;
 	
 	return $return;
 }
