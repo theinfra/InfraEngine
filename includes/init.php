@@ -1,5 +1,6 @@
 <?php 
 date_default_timezone_set('America/Mexico_City');
+setlocale(LC_TIME, 'es_ES');
 
 define('APP_BASE_PATH', dirname(realpath(dirname(__FILE__).'/../index.php')));
 
