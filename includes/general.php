@@ -783,9 +783,16 @@ function app_chmod($file, $mode)
 }
 
 
+
 function appGetMonthSelectOptions($selected = null){
-	if(is_null($selected)) $selected = date('m'); 
+	if(!is_null($selected) && $selected == "current") $selected = date('m');
+	
 	$return = "";
+	
+	if(is_null($selected) || !in_array($selected, array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 12))) {
+		$return .= "<option value='' selected='selected'> -- ".GetLang("SelectMonth")." -- </option>";; 
+	}
+	
 	for($i=1;$i<=12;$i++){
 		$selectedText = ($selected == $i) ? "selected='selected'" : "";
 		$return .= "<option value='".$i."' ".$selectedText.">".ucfirst(strftime('%B', mktime(0, 0, 0, $i, 10)))."</option>";
@@ -795,11 +802,22 @@ function appGetMonthSelectOptions($selected = null){
 }
 
 function appGetYearSelectOptions($selected = null){
-	if(is_null($selected)) $selected = date('Y');
+	if(!is_null($selected) && $selected == "current") $selected = date('Y');
+	
 	$return = "";
-	for($i=2014;$i<=2025;$i++){ //Empiezo en 2014 porque en este año se implemento la app
-		$selectedText = ($selected == $i) ? "selected='selected'" : "";
-		$return .= "<option value='".$i."' ".$selectedText.">".$i."</option>";
+	
+	$years = array(2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025); //Empiezo en 2014 porque en este año se implemento la app
+	if(is_null($selected) || !in_array($selected, $years)) {
+		$return .= "<option value='' selected='selected'> -- ".GetLang("SelectYear")." -- </option>";; 
+	}
+	else {
+		$return .= "<option value=''> -- ".GetLang("SelectYear")." -- </option>";;
+	}
+	
+	$return = "";
+	foreach($years as $year){ 
+		$selectedText = ($selected == $year) ? "selected='selected'" : "";
+		$return .= "<option value='".$year."' ".$selectedText.">".$year."</option>";
 	}
 	
 	return $return;
