@@ -7,12 +7,12 @@ function renderMenu($menu_items, $parent){
 			if(is_array($value)){
 				$submenu = renderMenu($value, $key);
 				if(trim($submenu) != ""){
-					$s .= "<li><a href=\"#\">".$key."</a>".$submenu."</li>";
+					$s .= "<li><a href=\"#\">".GetLang($key)."</a>".$submenu."</li>";
 				}
 			}
 			else {
 				if(UserHasAccess($value)){
-					$s .= "<li><a href=\"".$GLOBALS["AppPath"]."/".$value."\">".$key."</a></li>";
+					$s .= "<li><a href=\"".$GLOBALS["AppPath"]."/".$value."\">".GetLang($key)."</a></li>";
 				}
 			}
 		}
