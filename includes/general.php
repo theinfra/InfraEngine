@@ -847,3 +847,26 @@ function formatTime($seconds){
 
 	return substr($s, 0, -2);
 }
+
+// Asegurarse de siempre enviar el scheme (http:// o https://) en caso de redireccionar a algo externo porque si no, parse_url no lo reconoce 
+function RedirectHeader($location = "", $exit = true){
+	$AppPath = $GLOBALS["AppPath"];
+	$url = parse_url($location);
+	
+	if(!is_string($location) || trim($location) == "" || !$url){
+		header("Location: ".$AppPath);
+		exit;
+	}
+	
+	if(isset($url["host"]) || trim($url["host"]) != ""){
+		header("Location: ".$location);
+	}
+	else {
+		header("Location: ".$AppPath."/".$location);
+	}
+	
+	if($exit){
+		exit;
+	}
+	
+}
