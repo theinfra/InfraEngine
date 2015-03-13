@@ -189,7 +189,7 @@ function redirectRequest(){
 	}
 
 	if(file_exists(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$viewname.".css")){
-		$GLOBALS["ViewStylesheet"] .= "<link rel=\"stylesheet\" href=\"".$GLOBALS["AppPath"].DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$viewname.".css\" />";
+		$GLOBALS["ViewStylesheet"] .= "<link rel=\"stylesheet\" href=\"".$GLOBALS["AppPath"].'/views/'.$viewname.".css\" />";
 	}
 
 	$GLOBALS['APP_CLASS_VIEW']->parseView($viewname);
