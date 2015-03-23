@@ -4,3 +4,6 @@
 	</div>
 </div>
 <br class="Clear" />
+%%Panel.MainMenuHorizontal%%
+%%Panel.HeaderFlashMessages%%
+<br class="Clear" />

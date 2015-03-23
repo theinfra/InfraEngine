@@ -72,6 +72,7 @@ class CLASS_VIEW {
 			$panelData = file_get_contents ( $panelView );
 		}
 
+		$panelData = $this->Parse('Panel.', $panelData, 'GetPanelContent');
 		$panelData = $this->ParseGL($panelData);
 	
 		return $panelData;
