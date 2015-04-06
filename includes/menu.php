@@ -11,7 +11,7 @@ function renderMenu($menu_items, $parent){
 				}
 			}
 			else {
-				if($value == "#" || UserHasAccess($value)){
+				if(substr($value, 0, 1) == "#" || UserHasAccess($value)){
 					$s .= "<li><a href=\"".$GLOBALS["AppPath"]."/".$value."\"><div>".GetLang($key)."</div></a></li>";
 				}
 			}
