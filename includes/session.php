@@ -166,7 +166,7 @@ function UserHasAccess($url){
 		return false;
 	}
 	
-	if(!method_exists($controller, $split[1]) || !isset($controller->menu) || !isset($controller->menu[$split[1]])){
+	if(/*!method_exists($controller, $split[1]) || */!isset($controller->menu) || !isset($controller->menu[$split[1]])){
 		return false;
 	}
 
