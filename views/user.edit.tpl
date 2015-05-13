@@ -64,6 +64,10 @@
 			</td>
 		</tr>
 		<tr>
+			<td>%%LNG_NextDateMembership%%</td>
+			<td><input type="text" id="UserNextDateMembership" name="UserNextDateMembership" value="%%GLOBAL_UserNextDateMembership%%" class="UserNextDateMembership FormField FormFieldText FormFieldDatePicker" /></td>
+		</tr>
+		<tr>
 			<td>%%LNG_UserGroup%%</td>
 			<td>
 				<select name="UserEditUserGroup" id="UserEditUserGroup">
@@ -79,4 +83,14 @@
 		</tr>
 		</table> 
 	</form>
+		<script type="text/javascript">
+		$(".FormFieldDatepicker").datepicker({
+			showOn: "button",
+	    	buttonImage: "%%GLOBAL_AppPath%%/views/Styles/jquery-ui-datepicker/images/calendar.gif",
+	    	buttonImageOnly: true,
+	    	buttonText: "%%LNG_SelectDate%%",
+	    	minDate: 0,
+	    	dateFormat: 'dd-mm-yy'
+		});
+	</script>
 </body>

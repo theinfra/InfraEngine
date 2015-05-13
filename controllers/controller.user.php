@@ -107,7 +107,7 @@ class APPCONTROLLER_USER extends APP_BASE {
 	
 	function admin(){
 		$users = getModel("usuario");
-		$resultSet = $users->getResultSet(0, 10);
+		$resultSet = $users->getResultSet(0, "*");
 		
 		if(!is_array($resultSet) || empty($resultSet)){
 			$GLOBALS['UsersResultSetTable'] = GetLang("NoUsersFound");
@@ -152,6 +152,8 @@ class APPCONTROLLER_USER extends APP_BASE {
 	}
 	
 	function create(){
+		$GLOBALS["ViewScripts"] .= '<script src="'.$GLOBALS["AppPath"].'/javascript/jquery-ui-datepicker.min.js"></script>';
+		$GLOBALS["ViewStylesheet"] .= '<link rel="stylesheet" href="'.$GLOBALS["AppPath"].'/views/Styles/jquery-ui-datepicker/jquery-ui-datepicker.min.css">';
 		overwritePostToGlobalVars();
 	}
 	
@@ -167,6 +169,7 @@ class APPCONTROLLER_USER extends APP_BASE {
 			    'UserCreateStatus',
 			    'UserCreateMembershipType',
 			    'UserCreateUserGroup',
+		    	'UserNextDateMembership',
 		    );
 		    
 		    foreach($postFields as $field){
@@ -207,6 +210,7 @@ class APPCONTROLLER_USER extends APP_BASE {
 		    	'status' => $_POST['UserCreateStatus'],
 		    	'membershiptype' => $_POST['UserCreateMembershipType'],
 		    	'usergroup' => $_POST['UserCreateUserGroup'],
+		    	'nextdatemembership' => strtotime($_POST["UserNextDateMembership"]),
 		    );
 		    
 			$user_model = GetModel('usuario');
@@ -254,6 +258,8 @@ class APPCONTROLLER_USER extends APP_BASE {
 	}
 	
 	function edit(){
+		$GLOBALS["ViewScripts"] .= '<script src="'.$GLOBALS["AppPath"].'/javascript/jquery-ui-datepicker.min.js"></script>';
+		$GLOBALS["ViewStylesheet"] .= '<link rel="stylesheet" href="'.$GLOBALS["AppPath"].'/views/Styles/jquery-ui-datepicker/jquery-ui-datepicker.min.css">';
 		overwritePostToGlobalVars();
 		
 		if(!isset($_GET['userid']) || !isId($_GET['userid'])){
@@ -276,6 +282,7 @@ class APPCONTROLLER_USER extends APP_BASE {
 				'UserEditStatus' => $user['status'],
 				'UserEditMembershipType' => $user['membershiptype'],
 				'UserEditUserGroup' => $user['usergroup'],
+				'UserNextDateMembership' => date("d/m/Y", $user['nextdatemembership']),
 		);
 		$GLOBALS['UserEditUserId'] = $_GET['userid'];
 		
@@ -304,6 +311,7 @@ class APPCONTROLLER_USER extends APP_BASE {
 				'UserEditStatus',
 				'UserEditMembershipType',
 				'UserEditUserGroup',
+				'UserNextDateMembership',
 		);
 		
 		foreach($postFields as $field){
@@ -329,7 +337,7 @@ class APPCONTROLLER_USER extends APP_BASE {
 			overwritePostToGlobalVars();
 			return;
 		}
-		
+
 		$edituser = array(
 				'firstname' => $_POST['UserEditFirstName'],
 				'lastname' => $_POST['UserEditLastName'],
@@ -339,6 +347,7 @@ class APPCONTROLLER_USER extends APP_BASE {
 				'status' => $_POST['UserEditStatus'],
 				'membershiptype' => $_POST['UserEditMembershipType'],
 				'usergroup' => $_POST['UserEditUserGroup'],
+				'nextdatemembership' => strtotime($_POST["UserNextDateMembership"]),
 		);
 		
 		if(trim($_POST['UserEditPassword']) != '' && trim($_POST['UserEditPasswordConfirm']) != ''){
