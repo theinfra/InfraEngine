@@ -139,6 +139,10 @@ function UserHasAccess($url){
 		return false;
 	}
 	
+	if(GetConfig('nodb')){
+		return true;
+	}
+	
 	$user = getUserData();
 	
 	if(!$user){
