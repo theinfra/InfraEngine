@@ -106,6 +106,8 @@ class APPCONTROLLER_USER extends APP_BASE {
 	}
 	
 	function admin(){
+		$this->title = GetLang("Users");
+		
 		$users = getModel("usuario");
 		$resultSet = $users->getResultSet(0, "*");
 		

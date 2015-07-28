@@ -3,11 +3,17 @@
 class APP_BASE{
 	protected  $requestvars = '';
 	
+	public $title = "";
+	
 	function __construct(){
 		if (!isset($_SESSION)) {
 			session_start();
 		}
 		$this->requestvars = parseGetVars();
+	}
+	
+	public function getTitle(){
+		return $this->title;
 	}
 	
 	public function remote(){

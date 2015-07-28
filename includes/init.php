@@ -27,6 +27,13 @@ if(isset($_SERVER['HTTP_HOST']) && isset($_SERVER['SCRIPT_NAME'])){
 	$GLOBALS['AppSubDir'] = str_replace('index.php', '', $_SERVER['SCRIPT_NAME']);
 }
 
+if(GetConfig('SiteName') == '') {
+	$GLOBALS['SiteName'] == GetLang('Test');
+}
+else {
+	$GLOBALS['SiteName'] = GetConfig('SiteName');
+}
+
 if(!GetConfig("nodb")){
 	$GLOBALS['APP_CLASS_DB'] = new Db(GetConfig('db_host'), GetConfig('db_user'), GetConfig('db_pwd'), GetConfig('db_name'));
 

@@ -1,4 +1,5 @@
 <head>
+<title>%%GLOBAL_TemplateTitle%%</title>
 
 <link rel="stylesheet" href="%%GLOBAL_AppPath%%/views/Styles/style.css" />
 %%GLOBAL_ViewStylesheet%%
