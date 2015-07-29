@@ -1,7 +1,7 @@
 <head>
 <title>%%GLOBAL_TemplateTitle%%</title>
 
-<link rel="SHORTCUT ICON" href="images/favicon.ico">
+<link rel="SHORTCUT ICON" href="%%GLOBAL_AppPath%%/images/favicon.ico">
 
 <link rel="stylesheet" href="%%GLOBAL_AppPath%%/views/Styles/style.css" />
 %%GLOBAL_ViewStylesheet%%
