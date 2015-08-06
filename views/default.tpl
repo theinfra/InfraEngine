@@ -1,6 +1,11 @@
 %%Panel.HTMLHead%%
+<body>
+<div id="Container">
 %%Panel.Header%%
-%%Panel.MainMenuHorizontal%%
-%%Panel.HeaderFlashMessages%%
+<div class="WideContent">
 
 Pagina de inicio
+
+</div> <!-- WideContent -->
+</div> <!-- Container -->
+</body>

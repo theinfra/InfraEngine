@@ -1,8 +1,8 @@
 %%Panel.HTMLHead%%
-%%Panel.Header%%
-%%Panel.MainMenuHorizontal%%
-%%Panel.HeaderFlashMessages%%
 <body>
+<div id="Container">
+%%Panel.Header%%
+<div class="WideContent">
 %%Panel.HeaderFlashMessages%%
 <div class="WideContent">
 	<div class="UserLoginForm">
@@ -13,4 +13,7 @@
 		</form>
 	</div>
 </div>
+
+</div> <!-- WideContent -->
+</div> <!-- Container -->
 </body>

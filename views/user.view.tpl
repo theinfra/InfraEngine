@@ -1,11 +1,14 @@
 %%Panel.HTMLHead%%
-%%Panel.Header%%
-%%Panel.MainMenuHorizontal%%
-%%Panel.HeaderFlashMessages%%
 <body>
+<div id="Container">
+%%Panel.Header%%
+<div class="WideContent">
 <div class="UserViewPanel">
 	<ul class="UserViewMenu">
 		<li><a href="%%GLOBAL_AppPath%%/user/mydetails">%%LNG_MyUserDetails%%</a></li>
 	</ul>
 </div>
+
+</div> <!-- WideContent -->
+</div> <!-- Container -->
 </body>

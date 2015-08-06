@@ -1,8 +1,8 @@
 %%Panel.HTMLHead%%
-%%Panel.Header%%
-%%Panel.MainMenuHorizontal%%
-%%Panel.HeaderFlashMessages%%
 <body>
+<div id="Container">
+%%Panel.Header%%
+<div class="WideContent">
 <script type="text/javascript">
 function ShowLogInfo(id)
 {
@@ -19,4 +19,7 @@ function ShowLogInfo(id)
 <div class="LogViewLogTable">
 	%%GLOBAL_LogViewLogTable%%
 </div>
+
+</div> <!-- WideContent -->
+</div> <!-- Container -->
 </body>

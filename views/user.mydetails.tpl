@@ -1,8 +1,8 @@
 %%Panel.HTMLHead%%
-%%Panel.Header%%
-%%Panel.MainMenuHorizontal%%
-%%Panel.HeaderFlashMessages%%
 <body>
+<div id="Container">
+%%Panel.Header%%
+<div class="WideContent">
 <div class="UserMyDetailsForm">
 <form action="%%GLOBAL_AppPath%%/user/mydetailssubmit" id="UserMyDetailsForm" method="POST">
 	<table>
@@ -41,4 +41,7 @@
 		</table> 
 </form>
 </div>
+
+</div> <!-- WideContent -->
+</div> <!-- Container -->
 </body>

@@ -1,8 +1,8 @@
 %%Panel.HTMLHead%%
-%%Panel.Header%%
-%%Panel.MainMenuHorizontal%%
-%%Panel.HeaderFlashMessages%%
 <body>
+<div id="Container">
+%%Panel.Header%%
+<div class="WideContent">
 	<h1>%%LNG_Users%%</h1>
 	<p class="UserAdminActionMenu" id="UserAdminActionMenu">
 		<ul>
@@ -10,4 +10,7 @@
 		</ul>
 	</p>
 	%%GLOBAL_UsersResultSetTable%%
+	
+</div> <!-- WideContent -->
+</div> <!-- Container -->
 </body>

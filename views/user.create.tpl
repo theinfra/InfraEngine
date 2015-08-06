@@ -1,8 +1,8 @@
 %%Panel.HTMLHead%%
-%%Panel.Header%%
-%%Panel.MainMenuHorizontal%%
-%%Panel.HeaderFlashMessages%%
 <body>
+<div id="Container">
+%%Panel.Header%%
+<div class="WideContent">
 	<h1>%%LNG_UserCreate%%</h1>
 	<p class="UserAdminActionMenu" id="UserAdminActionMenu">
 		<ul>
@@ -92,4 +92,7 @@
 	    	dateFormat: 'dd-mm-yy'
 		});
 	</script>
+
+</div> <!-- WideContent -->
+</div> <!-- Container -->
 </body>
