@@ -513,17 +513,23 @@ function AddLog($logmsg = "", $logseverity = APP_SEVERITY_ERROR, $logmodule = "p
 	
 	$log = array();
 	$log['logsummary'] = substr($logmsg, 0, 50);
-	$log['logmsg'] = $logmsg . GetLogTrace();
+	$log['logmsg'] = $logmsg;
+	if(!GetConfig("nodb")) $log['logmsg'] .= GetLogTrace();
 	$log['logseverity'] = $logseverity;
 	$log['logmodule'] = $logmodule;
 	$log['logdate'] = microtime(true);
 
-	$logmodel = GetModel('log');
-	$logid = $logmodel->add($log);
+	if(GetConfig("nodb")){
+		file_put_contents(APP_BASE_PATH.DIRECTORY_SEPARATOR."log.txt", print_array($log, $true, true)."\n");
+	}
+	else {
+		$logmodel = GetModel('log');
+		$logid = $logmodel->add($log);
 	
-	if(!$logid){
-		print $logmodel->getError();
-		die();
+		if(!$logid){
+			print $logmodel->getError();
+			die();
+		}
 	}
 }
 
