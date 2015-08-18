@@ -22,6 +22,7 @@ class CLASS_VIEW {
 		$this->tplData = file_get_contents(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$tplname.'.tpl');
 
 		$this->tplData = $this->parsePanels();
+		$this->tplData = $this->parseMustaches();
 		$this->tplData = $this->ParseGL($this->tplData);
 		
 		if ($return) {
@@ -78,6 +79,20 @@ class CLASS_VIEW {
 		return $panelData;
 	}
 	
+	function getMustacheContent($mustacheName){
+		$mustacheData = "";
+		
+		$mustacheFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'Mustaches'.DIRECTORY_SEPARATOR.$mustacheName.'.html';
+		
+		if(file_exists($mustacheFile)){
+			$mustacheData = "<script id=\"tpl".$mustacheName."\" type=\"x-tmpl-mustache\">\n".
+							$this->ParseGL(file_get_contents($mustacheFile)).
+							"\n</script>\n";
+		}
+		
+		return $mustacheData;
+	}
+	
 	function Parse($prefix, $text, $replace){
 		$matches = array();
 		$output = $text;
@@ -105,6 +120,10 @@ class CLASS_VIEW {
 		return $this->Parse('Panel.', $this->tplData, 'GetPanelContent');
 	}
 	
+	function parseMustaches(){
+		return $this->Parse('Mustache.', $this->tplData, 'getMustacheContent');
+	}
+	
 	public function GetSnippet($SnippetId)
 	{
 		$snippetFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'Snippets'.DIRECTORY_SEPARATOR.$SnippetId.'.tpl';
@@ -114,6 +133,17 @@ class CLASS_VIEW {
 	
 		$snippetData = file_get_contents($snippetFile);
 		return $this->ParseGL($snippetData);
+	}
+	
+	public function GetMustache($MustacheName)
+	{
+		$mustacheFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'Mustaches'.DIRECTORY_SEPARATOR.$MustacheName.'.html';
+		if(!$mustacheFile) {
+			return "<div>[Mustache not found: '" . $PanelId . "']</div>";
+		}
+	
+		$mustacheData = file_get_contents($mustacheFile);
+		return $this->ParseGL($mustacheData);
 	}
 	
 }
