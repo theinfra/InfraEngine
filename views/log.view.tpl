@@ -20,6 +20,35 @@ function ShowLogInfo(id)
 	%%GLOBAL_LogViewLogTable%%
 </div>
 
+<script lang="text/javascript">
+$('body').on('click', '.LogDelete', function(){
+Vrow = $(this).parent().parent();
+Vrow.addClass("LogSelected");
+if(!confirm("%%LNG_WarningDeleteLog%%")){
+	Vrow.removeClass("LogSelected");
+	return;
+}	
+
+Vlogid = Vrow.attr("logid");
+	
+$.getJSON(
+	"%%GLOBAL_AppPath%%/log/remote/",
+	{
+		w: "deletelog",
+		LogId: Vlogid
+	},
+	function(data){
+		if(data.success == 0){
+			alert(data.msg);
+		}
+		else {
+			Vrow.remove();
+		}
+	}
+);
+});
+</script>
+
 </div> <!-- WideContent -->
 </div> <!-- Container -->
 </body>
