@@ -56,4 +56,16 @@ class APPCONTROLLER_LOG extends APP_BASE {
 			exit;			
 		}
 	}
+	
+	function remote_clearlog(){
+		$model = getModel("log");
+		if(!$GLOBALS["APP_CLASS_DB"]->DeleteQuery("log", "WHERE 1=1")){
+			AddLog(GetLang("ErrorWhileClearLog"));
+			echo app_json_encode(array("success" => 0, "msg" => GetLang("ErrorMsgGeneric")));
+			exit;
+		}
+		
+		echo app_json_encode(array("success" => 1));
+		exit;
+	}
 }
