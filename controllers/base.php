@@ -26,5 +26,10 @@ class APP_BASE{
 		if(method_exists($this, $function)){
 			$this->$function();
 		}
+		else {
+			AddLog(sprintf(GetLang("ErrorRemoteFunctionNotFound"), $function));
+			echo app_json_encode(array("success" => "0", "msg" => GetLang("ErrorMsgGeneric")));
+			exit;
+		}
 	}
 }
