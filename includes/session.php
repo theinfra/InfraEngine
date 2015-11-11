@@ -167,10 +167,12 @@ function UserHasAccess($url){
 	$controller = getController($split[0]);
 	
 	if(!is_object($controller)){
+		AddLog(sprintf(GetLang("ErrorAccessControlNoController"), $split[0]));
 		return false;
 	}
 	
 	if(/*!method_exists($controller, $split[1]) || */!isset($controller->menu) || !isset($controller->menu[$split[1]])){
+		AddLog(sprintf(GetLang("ErrorAccessControlNoMenu"), $split[1], $split[0]));
 		return false;
 	}
 

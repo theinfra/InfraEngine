@@ -149,11 +149,12 @@ function redirectRequest(){
 	$GLOBALS["ViewScripts"] = "";
 	$controller = getController($GLOBALS['AppRequestVars'][0]);
 	
-	if(isset($controller->menu) && isset($controller->menu[$GLOBALS["AppRequestVars"][1]])){
+	if(isset($controller->menu)/* && isset($controller->menu[$GLOBALS["AppRequestVars"][1]])*/){
 		if(!UserHasAccess($GLOBALS["AppRequestVars"][0]."/".$GLOBALS["AppRequestVars"][1])){
 			flashMessage(GetLang("NotPermitted"), APP_SEVERITY_ERROR);
-			header("Location: ".$GLOBALS["AppPath"]."/");
-			exit;
+			$GLOBALS['AppRequestVars'][0] = "index";
+			$GLOBALS['AppRequestVars'][1] = "view";
+			overwritePostToGlobalVars();
 		}
 	}
 	
@@ -513,23 +514,17 @@ function AddLog($logmsg = "", $logseverity = APP_SEVERITY_ERROR, $logmodule = "p
 	
 	$log = array();
 	$log['logsummary'] = substr($logmsg, 0, 50);
-	$log['logmsg'] = $logmsg;
-	if(!GetConfig("nodb")) $log['logmsg'] .= GetLogTrace();
+	$log['logmsg'] = $logmsg . GetLogTrace();
 	$log['logseverity'] = $logseverity;
 	$log['logmodule'] = $logmodule;
 	$log['logdate'] = microtime(true);
 
-	if(GetConfig("nodb")){
-		file_put_contents(APP_BASE_PATH.DIRECTORY_SEPARATOR."log.txt", print_array($log, $true, true)."\n");
-	}
-	else {
-		$logmodel = GetModel('log');
-		$logid = $logmodel->add($log);
+	$logmodel = GetModel('log');
+	$logid = $logmodel->add($log);
 	
-		if(!$logid){
-			print $logmodel->getError();
-			die();
-		}
+	if(!$logid){
+		print $logmodel->getError();
+		die();
 	}
 }
 
