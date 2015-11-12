@@ -166,6 +166,12 @@ function UserHasAccess($url){
 
 	$controller = getController($split[0]);
 	
+	if($GLOBALS['AppRequestVars'][0] == "index" && !$controller){
+		$controllerfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'controllerbase.index.php';
+		include_once $controllerfile;
+		$controller = new APPCONTROLLERBASE_INDEX();
+	}
+	
 	if(!is_object($controller)){
 		AddLog(sprintf(GetLang("ErrorAccessControlNoController"), $split[0]));
 		return false;

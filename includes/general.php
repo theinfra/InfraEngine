@@ -147,7 +147,15 @@ function redirectRequest(){
 
 	$GLOBALS["ViewStylesheet"] = "";
 	$GLOBALS["ViewScripts"] = "";
+	
 	$controller = getController($GLOBALS['AppRequestVars'][0]);
+	
+	//Si el requerido es "index", buscar APPCONTROLLER_INDEX que debe de extender a APPBASE_INDEX. Si no se encuentra el primero, buscar el segundo que es base de version y no se debe de cambiar en instancias
+	if($GLOBALS['AppRequestVars'][0] == "index" && !$controller){
+		$controllerfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'controllerbase.index.php';
+		include_once $controllerfile;
+		$controller = new APPCONTROLLERBASE_INDEX();
+	}
 	
 	if(isset($controller->menu)/* && isset($controller->menu[$GLOBALS["AppRequestVars"][1]])*/){
 		if(!UserHasAccess($GLOBALS["AppRequestVars"][0]."/".$GLOBALS["AppRequestVars"][1])){
@@ -514,17 +522,23 @@ function AddLog($logmsg = "", $logseverity = APP_SEVERITY_ERROR, $logmodule = "p
 	
 	$log = array();
 	$log['logsummary'] = substr($logmsg, 0, 50);
-	$log['logmsg'] = $logmsg . GetLogTrace();
+	$log['logmsg'] = $logmsg;
+	if(!GetConfig("nodb")) $log['logmsg'] .= GetLogTrace();
 	$log['logseverity'] = $logseverity;
 	$log['logmodule'] = $logmodule;
 	$log['logdate'] = microtime(true);
 
-	$logmodel = GetModel('log');
-	$logid = $logmodel->add($log);
+	if(GetConfig("nodb")){
+		file_put_contents(APP_BASE_PATH.DIRECTORY_SEPARATOR."log.txt", print_array($log, true, true)."\n");
+	}
+	else {
+		$logmodel = GetModel('log');
+		$logid = $logmodel->add($log);
 	
-	if(!$logid){
-		print $logmodel->getError();
-		die();
+		if(!$logid){
+			print $logmodel->getError();
+			die();
+		}
 	}
 }
 
