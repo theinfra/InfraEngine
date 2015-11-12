@@ -10,6 +10,6 @@ class APPCONTROLLERBASE_INDEX extends APP_BASE {
 	);
 	
 	function view(){
-		print "base";
+
 	}
 }
