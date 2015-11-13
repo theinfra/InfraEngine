@@ -1,7 +1,6 @@
 %%Panel.HTMLHead%%
 <body>
 <div id="Container">
-%%Panel.Header%%
 <div class="WideContent">
 	<h1>%%LNG_UserEdit%%</h1>
 	<p class="UserAdminActionMenu" id="UserAdminActionMenu">

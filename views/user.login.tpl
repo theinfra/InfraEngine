@@ -1,7 +1,6 @@
 %%Panel.HTMLHead%%
 <body>
 <div id="Container">
-%%Panel.Header%%
 <div class="WideContent">
 %%Panel.HeaderFlashMessages%%
 <div class="WideContent">
