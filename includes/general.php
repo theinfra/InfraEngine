@@ -180,22 +180,7 @@ function redirectRequest(){
 	}
 	*/
 	
-	$viewname = '';
-	if($GLOBALS['AppRequestVars'][1] == 'view'){
-		if(file_exists(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$GLOBALS['AppRequestVars'][0].'.view.tpl')){
-			$viewname = $GLOBALS['AppRequestVars'][0].'.view';
-		}
-		else{
-			$viewname = $GLOBALS['AppRequestVars'][0];
-		}
-	}
-	else {
-		$viewname = $GLOBALS['AppRequestVars'][0].'.'.$GLOBALS['AppRequestVars'][1];
-	}
-	
-	if(!file_exists(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$viewname.".tpl")){
-		$viewname = 'default';
-	}
+	$viewname = $GLOBALS["APP_CLASS_VIEW"]->getTplViewName($GLOBALS['AppRequestVars'][0], $GLOBALS['AppRequestVars'][1]);
 
 	if(file_exists(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$viewname.".css")){
 		$GLOBALS["ViewStylesheet"] .= "<link rel=\"stylesheet\" href=\"".$GLOBALS["AppPath"].'/views/'.$viewname.".css\" />";

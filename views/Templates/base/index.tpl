@@ -1,6 +1,7 @@
 %%Panel.HTMLHead%%
 <body>
 <div id="Container">
+%%Panel.Header%%
 <div class="WideContent">
 
 Pagina de inicio

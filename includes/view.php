@@ -18,8 +18,19 @@ class CLASS_VIEW {
 				echo '';
 			}
 		}
+		$tplFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR.$tplname.'.tpl';
+		$tplBaseFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR."base".DIRECTORY_SEPARATOR.$tplname.'.tpl';
 		
-		$this->tplData = file_get_contents(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$tplname.'.tpl');
+		if(file_exists($tplFile)){
+			$this->tplData = file_get_contents($tplFile);
+		}
+		else if(file_exists($tplBaseFile)){
+			$this->tplData = file_get_contents($tplBaseFile);
+		}
+		else {
+			AddLog(sprintf(GetLang("WarnNoTplFileFound"), $tplname), APP_SEVERITY_WARNING);
+			$this->tplData = "";
+		}
 
 		$this->tplData = $this->parsePanels();
 		$this->tplData = $this->parseMustaches();
@@ -146,6 +157,45 @@ class CLASS_VIEW {
 		return $this->ParseGL($mustacheData);
 	}
 	
+	public function getTplViewName($controller, $action){
+		if(trim($controller) == ""){
+			return false;
+		}
+
+		$tplFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR.$controller.'.'.$action.'.tpl';
+		$tplViewFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR.$controller.'view.tpl';
+		$tplControllerFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR.$controller.'.tpl';
+		
+		$tplBaseFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR."base".DIRECTORY_SEPARATOR.$controller.'.'.$action.'.tpl';
+		$tplControllerBaseFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR."base".DIRECTORY_SEPARATOR.$controller.'.tpl';
+		$tplViewBaseFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR."base".DIRECTORY_SEPARATOR.$controller.'view.tpl';
+		
+		if(file_exists($tplFile)){
+			return $controller.".".$action;
+		}
+		
+		if(file_exists($tplViewFile)){
+			return $controller."view";
+		}
+		
+		if(file_exists($tplControllerFile)){
+			return $controller;
+		}
+		
+		if(file_exists($tplBaseFile)){
+			return $controller.".".$action;
+		}
+		
+		if(file_exists($tplViewBaseFile)){
+			return $controller.".view";
+		}
+		
+		if(file_exists($tplControllerBaseFile)){
+			return $controller;
+		}
+		
+		return 'default';
+	}
 }
 
 ?>
