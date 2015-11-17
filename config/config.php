@@ -9,7 +9,7 @@ $GLOBALS['APP_CONFIG']['SiteName'] = 'Sitio de Prueba';
 
 $GLOBALS['APP_CONFIG']['TitleTemplate'] = '%%%%GLOBAL_SiteName%%%% - %s';
 
-$GLOBALS['APP_CONFIG']['nodb'] = false;
+$GLOBALS['APP_CONFIG']['nodb'] = true;
 $GLOBALS['APP_CONFIG']['db_host'] = 'localhost';
 $GLOBALS['APP_CONFIG']['db_user'] = 'app_user';
 $GLOBALS['APP_CONFIG']['db_pwd'] = 'apppwd';
