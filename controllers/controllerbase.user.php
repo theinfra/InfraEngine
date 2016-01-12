@@ -473,27 +473,34 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 		}
 	
 		$user_model = getModel("usuario");
-	
+		$users = array();
 		if(isset($_GET["name_search"]) && trim($_GET["name_search"]) != ""){
 				
 			$users = $user_model->GetResultSet(0, $_GET["limit"], "firstname LIKE '%".$_GET["name_search"]."%'
 					OR lastname LIKE '%".$_GET["name_search"]."%'
 					OR mail LIKE '%".$_GET["name_search"]."%'
 					OR username LIKE '%".$_GET["name_search"]."%'", null, array("userid", "username"));
-	
-			if(is_array($users)){
-				$return_users = array();
-				foreach($users as $user){
-					$return_users[$user["userid"]] = $user["username"];
-				}
-				echo app_json_encode(array("success" => 1, "users" => $return_users));
-				exit;
+		}
+		
+		if(isset($_GET["id_search"]) && trim($_GET["id_search"]) != ""){
+			$users = $user_model->GetResultSet(0, $_GET["limit"], "userid='".$_GET["id_search"]."'", null, array("userid", "username"));
+		}
+		
+		if(is_array($users) && !empty($users)){
+			$return_users = array();
+			foreach($users as $user){
+				$return_users[] = array(
+						"id" => $user["userid"],
+						"name" => $user["username"],
+				);
 			}
-			else {
-				AddLog(GetLang("ErrorWhileRemoteGettingUsers"). "Error: ".$GLOBALS["APP_CLASS_DB"]->GetError());
-				echo app_json_encode(array("success" => 0));
-				exit;
-			}
+			echo app_json_encode(array("success" => 1, "users" => $return_users));
+			exit;
+		}
+		else {
+			//AddLog(GetLang("ErrorWhileRemoteGettingUsers"). "Error: ".$GLOBALS["APP_CLASS_DB"]->GetError());
+			echo app_json_encode(array("success" => 0));
+			exit;
 		}
 	
 		//$users = $user_model->GetResultSet();
