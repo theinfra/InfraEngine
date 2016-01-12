@@ -3,6 +3,7 @@
 class APPCONTROLLERBASE_USER extends APP_BASE {
 	
 	public $menu = array(
+		"remote" => 3,
 		"view" => 1,
 		"login" => 0,
 		"logout" => 0,
@@ -16,6 +17,7 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 		"mydetails" => 1,
 		"mydetailssubmit" => 1,
 		"myreserves" => 1,
+		"remote_getusers" => 3,
 	);
 	
 	function view(){
@@ -463,5 +465,39 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 			header("Location: ".$GLOBALS['AppPath']."/user/mydetails");
 			exit;
 		}
+	}
+	
+	function remote_getusers(){
+		if(!isset($_GET["limit"]) || !is_numeric($_GET["limit"])){
+			$_GET["limit"] = 10;
+		}
+	
+		$user_model = getModel("usuario");
+	
+		if(isset($_GET["name_search"]) && trim($_GET["name_search"]) != ""){
+				
+			$users = $user_model->GetResultSet(0, $_GET["limit"], "firstname LIKE '%".$_GET["name_search"]."%'
+					OR lastname LIKE '%".$_GET["name_search"]."%'
+					OR mail LIKE '%".$_GET["name_search"]."%'
+					OR username LIKE '%".$_GET["name_search"]."%'", null, array("userid", "username"));
+	
+			if(is_array($users)){
+				$return_users = array();
+				foreach($users as $user){
+					$return_users[$user["userid"]] = $user["username"];
+				}
+				echo app_json_encode(array("success" => 1, "users" => $return_users));
+				exit;
+			}
+			else {
+				AddLog(GetLang("ErrorWhileRemoteGettingUsers"). "Error: ".$GLOBALS["APP_CLASS_DB"]->GetError());
+				echo app_json_encode(array("success" => 0));
+				exit;
+			}
+		}
+	
+		//$users = $user_model->GetResultSet();
+		echo app_json_encode(array("success" => 0));
+		exit;
 	}
 }
