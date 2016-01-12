@@ -1,6 +1,6 @@
 <?php
 
-class APPCONTROLLER_LOG extends APP_BASE {
+class APPCONTROLLERBASE_LOG extends APP_BASE {
 	
 	public $menu = array(
 		"view" => 3,

@@ -29,12 +29,27 @@ function getController($controller){
 	if(trim($controller) == ""){
 		$controller = "index";
 	}
-	$controllerfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'controller.'.$controller.'.php';
-	if($controller != '' and file_exists($controllerfile)){
-		include_once $controllerfile;
-		$controllername = 'APPCONTROLLER_'.strtoupper($controller);
-		$controller = new $controllername();
-		return $controller;
+	
+	$controller_obj = false;
+	if($controller != '') {
+		$controllerfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'controller.'.$controller.'.php';
+		if(file_exists($controllerfile)){
+			include_once $controllerfile;
+			$controllername = 'APPCONTROLLER_'.strtoupper($controller);
+			$controller_obj = new $controllername();
+		}
+		else {
+			$controllerfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'controllerbase.'.$controller.'.php';
+			include_once $controllerfile;
+			$controllername = 'APPCONTROLLERBASE_'.strtoupper($controller);
+			$controller_obj = new $controllername();
+		}
+	}
+	if(!$controller_obj){
+		return false;
+	}
+	else {
+		return $controller_obj;
 	}
 }
 
@@ -150,13 +165,13 @@ function redirectRequest(){
 	
 	$controller = getController($GLOBALS['AppRequestVars'][0]);
 	
-	//Si el requerido es "index", buscar APPCONTROLLER_INDEX que debe de extender a APPBASE_INDEX. Si no se encuentra el primero, buscar el segundo que es base de version y no se debe de cambiar en instancias
-	if($GLOBALS['AppRequestVars'][0] == "index" && !$controller){
+	//Comento esto porque ya hago esta funcionalidad en getController()
+	/*if($GLOBALS['AppRequestVars'][0] == "index" && !$controller){
 		$controllerfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'controllerbase.index.php';
 		include_once $controllerfile;
 		$controller = new APPCONTROLLERBASE_INDEX();
 	}
-	
+	*/
 	if(isset($controller->menu)/* && isset($controller->menu[$GLOBALS["AppRequestVars"][1]])*/){
 		if(!UserHasAccess($GLOBALS["AppRequestVars"][0]."/".$GLOBALS["AppRequestVars"][1])){
 			flashMessage(GetLang("NotPermitted"), APP_SEVERITY_ERROR);

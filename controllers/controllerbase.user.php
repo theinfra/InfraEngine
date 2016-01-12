@@ -1,6 +1,6 @@
 <?php
 
-class APPCONTROLLER_USER extends APP_BASE {
+class APPCONTROLLERBASE_USER extends APP_BASE {
 	
 	public $menu = array(
 		"view" => 1,
