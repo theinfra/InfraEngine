@@ -2,7 +2,7 @@
 
 require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'base.php');
 
-class APPMODEL_USUARIO extends APPMODELBASE
+class APPMODEL_USER extends APPMODELBASE
 {
 
 	/**
@@ -83,7 +83,7 @@ class APPMODEL_USUARIO extends APPMODELBASE
 				),
 		);
 
-		$tableName = "usuario";
+		$tableName = "user";
 		$primaryKeyName = array(
 				"userid",
 				);

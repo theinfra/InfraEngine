@@ -29,7 +29,7 @@ function getCustomerIdByToken($token){
 		return false;
 	}
 	
-	$user_model = GetModel("usuario");
+	$user_model = GetModel("user");
 	$user = $user_model->get(array("token" => $token));
 	return $user;
 }
@@ -39,7 +39,7 @@ function getUser($userid = false){
 		return false;
 	}
 
-	$user_model = getModel("usuario");
+	$user_model = getModel("user");
 	$user = $user_model->get(array("userid" => $userid));
 	return $user;
 

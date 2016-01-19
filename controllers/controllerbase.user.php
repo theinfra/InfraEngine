@@ -48,7 +48,7 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 	    	}
 	    }
 	    
-	    $user_model = getModel("usuario");
+	    $user_model = getModel("user");
 	    $user = $user_model->getResultSet(0, 1, array("username" => $_POST["UserLoginUsername"]));
 
 	    if(empty($user)){
@@ -110,7 +110,7 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 	function admin(){
 		$this->title = GetLang("Users");
 		
-		$users = getModel("usuario");
+		$users = getModel("user");
 		$resultSet = $users->getResultSet(0, "*");
 		
 		if(!is_array($resultSet) || empty($resultSet)){
@@ -123,7 +123,7 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 		<tr>
 			<th>Nombre</th>
 			<th>Apellido</th>
-			<th>Usuario</th>
+			<th>%%LNG_USer%%</th>
 			<th>Mail</th>
 			<th>Telefono</th>
 			<th>Estatus</th>
@@ -217,7 +217,7 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 		    	'nextdatemembership' => strtotime($_POST["UserNextDateMembership"]),
 		    );
 		    
-			$user_model = GetModel('usuario');
+			$user_model = GetModel('user');
 			$userid = $user_model->add($newuser);
 			
 			if(isId($userid)){
@@ -246,7 +246,7 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 			return;
 		}
 
-		$user_model = GetModel('usuario');
+		$user_model = GetModel('user');
 		$delete = $user_model->delete($_GET['userid']);
 		if(!$delete){
 			AddLog(sprintf(GetLang('ErrorDeletingUser'), $_GET['userid'], $user_model->getError()));
@@ -272,7 +272,7 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 			return;
 		}
 				
-		$user_model = GetModel("usuario");
+		$user_model = GetModel("user");
 		$user = $user_model->get($_GET['userid']);
 
 		$data = array(
@@ -362,7 +362,7 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 			$edituser['salt'] = $salt;
 		}
 		
-		$user_model = GetModel('usuario');
+		$user_model = GetModel('user');
 		$userid = $user_model->edit($edituser, array("userid" => $userid));
 
 		if($userid){
@@ -451,7 +451,7 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 		
 		$user = getUserData();
 		
-		$user_model = GetModel('usuario');
+		$user_model = GetModel('user');
 		$userid = $user_model->edit($edituser, array("userid" => $user["userid"]));
 		
 		if($userid){
@@ -472,7 +472,7 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 			$_GET["limit"] = 10;
 		}
 	
-		$user_model = getModel("usuario");
+		$user_model = getModel("user");
 		$users = array();
 		if(isset($_GET["name_search"]) && trim($_GET["name_search"]) != ""){
 				
