@@ -197,8 +197,8 @@ function redirectRequest(){
 	
 	$viewname = $GLOBALS["APP_CLASS_VIEW"]->getTplViewName($GLOBALS['AppRequestVars'][0], $GLOBALS['AppRequestVars'][1]);
 
-	if(file_exists(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$viewname.".css")){
-		$GLOBALS["ViewStylesheet"] .= "<link rel=\"stylesheet\" href=\"".$GLOBALS["AppPath"].'/views/'.$viewname.".css\" />";
+	if(file_exists(APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."Templates".DIRECTORY_SEPARATOR.$viewname.".css")){
+		$GLOBALS["ViewStylesheet"] .= "<link rel=\"stylesheet\" href=\"".$GLOBALS["AppPath"].'/views/Templates/'.$viewname.".css\" />";
 	}
 	
 	if(trim($controller->getTitle()) == ''){
