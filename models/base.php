@@ -298,11 +298,18 @@ class APPMODELBASE
 		}
 		
 		$resultSet = array();
+		
 		while($row = $this->db->Fetch($result)){
 			$resultSet[] = $row;
 		}
-		
+
 		return $resultSet;
+	}
+	
+	public function getSingleResultSet($offset = 0, $amount = 10, $where = array(), $order = array(), $columns = array()){
+		$resultSet = $this->getResultSet($offset, $amount, $where, $order, $columns);
+		
+		return $resultSet[0];
 	}
 
 	/**
