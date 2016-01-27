@@ -53,6 +53,10 @@ foreach($langfiles as $filename){
 	$file = APP_BASE_PATH.DIRECTORY_SEPARATOR.'language'.DIRECTORY_SEPARATOR.GetConfig('language').DIRECTORY_SEPARATOR.$filename;
 	$vars = parse_ini_file($file);
 
+	if(!is_array($vars)){
+		continue;
+	}
+	
 	if (isset($GLOBALS['APP_LANG'])) {
 		$GLOBALS['APP_LANG'] = array_merge($GLOBALS['APP_LANG'], $vars);
 	} else {
