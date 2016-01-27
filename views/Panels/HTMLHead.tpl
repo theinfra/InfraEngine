@@ -8,5 +8,6 @@
 <script src="%%GLOBAL_AppPath%%/javascript/jquery-1.11.0.min.js"></script>
 %%GLOBAL_ViewScripts%%
 <script src="%%GLOBAL_AppPath%%/javascript/mustache.min.js"></script>
+<script src="%%GLOBAL_AppPath%%/javascript/views.js"></script>
 
 </head>
