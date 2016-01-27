@@ -37,3 +37,19 @@ function ShowTab(T)
 		$('#currentTab').val(T);
 		//document.getElementById("currentTab").value = T;
 }
+
+function DisableFormElements(classname){
+	if(classname == ""){
+		return;
+	}
+	
+	$("."+classname+" td input, ."+classname+" td select").attr('disabled', 'disabled');
+}
+
+function EnableFormElements(classname){
+	if(classname == ""){
+		return;
+	}
+	
+	$("."+classname+" td input, ."+classname+" td select").removeAttr('disabled');
+}
