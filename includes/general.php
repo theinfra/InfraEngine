@@ -31,6 +31,7 @@ function getController($controller){
 	}
 	
 	$controller_obj = false;
+// ToDo: Arreglar estas validaciones, primero encontrar archivo y luego incluirlo en bloques diferentes
 	if($controller != '') {
 		$controllerfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'controller.'.$controller.'.php';
 		if(file_exists($controllerfile)){
@@ -40,9 +41,14 @@ function getController($controller){
 		}
 		else {
 			$controllerfile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'controllers'.DIRECTORY_SEPARATOR.'controllerbase.'.$controller.'.php';
-			include_once $controllerfile;
-			$controllername = 'APPCONTROLLERBASE_'.strtoupper($controller);
-			$controller_obj = new $controllername();
+			if(file_exists($controllerfile)){
+				include_once $controllerfile;
+				$controllername = 'APPCONTROLLERBASE_'.strtoupper($controller);
+				$controller_obj = new $controllername();
+			}
+			else {
+				return getController("index");
+			}
 		}
 	}
 	if(!$controller_obj){
