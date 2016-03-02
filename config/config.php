@@ -29,6 +29,9 @@ $GLOBALS['APP_CONFIG']["Currencies"] = array(
 
 $GLOBALS['APP_CONFIG']["MainMenu"] = array(
 		"Home" => "index",
+		"Admin" => array(
+			"Logs" => "log",
+		),
 		"LogInOut" => "user/login",
 );
 
