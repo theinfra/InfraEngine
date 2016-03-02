@@ -18,8 +18,8 @@ class CLASS_VIEW {
 				echo '';
 			}
 		}
-		$tplFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR.$tplname.'.tpl';
-		$tplBaseFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR."base".DIRECTORY_SEPARATOR.$tplname.'.tpl';
+		$tplFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."Templates".DIRECTORY_SEPARATOR.$tplname.'.tpl';
+		$tplBaseFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."Templates".DIRECTORY_SEPARATOR."base".DIRECTORY_SEPARATOR.$tplname.'.tpl';
 		
 		if(file_exists($tplFile)){
 			$this->tplData = file_get_contents($tplFile);
@@ -162,13 +162,13 @@ class CLASS_VIEW {
 			return false;
 		}
 
-		$tplFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR.$controller.'.'.$action.'.tpl';
-		$tplViewFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR.$controller.'view.tpl';
-		$tplControllerFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR.$controller.'.tpl';
+		$tplFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."Templates".DIRECTORY_SEPARATOR.$controller.'.'.$action.'.tpl';
+		$tplViewFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."Templates".DIRECTORY_SEPARATOR.$controller.'view.tpl';
+		$tplControllerFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."Templates".DIRECTORY_SEPARATOR.$controller.'.tpl';
 		
-		$tplBaseFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR."base".DIRECTORY_SEPARATOR.$controller.'.'.$action.'.tpl';
-		$tplControllerBaseFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR."base".DIRECTORY_SEPARATOR.$controller.'.tpl';
-		$tplViewBaseFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR."base".DIRECTORY_SEPARATOR.$controller.'view.tpl';
+		$tplBaseFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."Templates".DIRECTORY_SEPARATOR."base".DIRECTORY_SEPARATOR.$controller.'.'.$action.'.tpl';
+		$tplControllerBaseFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."Templates".DIRECTORY_SEPARATOR."base".DIRECTORY_SEPARATOR.$controller.'.tpl';
+		$tplViewBaseFile = APP_BASE_PATH.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR."Templates".DIRECTORY_SEPARATOR."base".DIRECTORY_SEPARATOR.$controller.'view.tpl';
 		
 		if(file_exists($tplFile)){
 			return $controller.".".$action;
