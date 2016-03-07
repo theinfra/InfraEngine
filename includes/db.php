@@ -471,27 +471,34 @@ class Db {
 	
 	function UpdateQuery($table, $values, $where="", $useNullValues=false)
 	{
-		$fields = array();
-		foreach ($values as $k => $v) {
-	
-			if ($useNullValues) {
-				if (is_null($v)) {
-					$v = "NULL";
+		if(is_array($values)){
+			$fields = array();
+			foreach ($values as $k => $v) {
+		
+				if ($useNullValues) {
+					if (is_null($v)) {
+						$v = "NULL";
+					} else {
+						$v = "'" . $this->Quote($v) . "'";
+					}
 				} else {
 					$v = "'" . $this->Quote($v) . "'";
 				}
-			} else {
-				$v = "'" . $this->Quote($v) . "'";
+		
+				$fields[] = $k . "=" . $v;
 			}
-	
-			$fields[] = $k . "=" . $v;
-		}
 		$fields = implode(", ", $fields);
+		}
+		else {
+			$fields = $values;
+		}
+		
 		if ($where != "") {
 			$fields .= " WHERE " . $where;
 		}
 	
 		$query = "UPDATE " . $table . " SET " . $fields;
+
 		if ($this->Query($query)) {
 			return true;
 		}
