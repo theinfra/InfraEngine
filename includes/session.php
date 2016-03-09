@@ -34,13 +34,20 @@ function getCustomerIdByToken($token){
 	return $user;
 }
 
-function getUser($userid = false){
-	if(!$userid){
+function getUser($userid){
+	if(!isId($userid)){
 		return false;
+	}
+	
+	static $users = array();
+	
+	if(isset($users[$userid])){
+		return $users[$userid];
 	}
 
 	$user_model = getModel("user");
 	$user = $user_model->get(array("userid" => $userid));
+	$users[$userid] = $user;
 	return $user;
 
 }
