@@ -5,6 +5,18 @@ setlocale(LC_TIME, 'es_ES');
 define('APP_BASE_PATH', dirname(realpath(dirname(__FILE__).'/../index.php')));
 
 include_once ''.APP_BASE_PATH.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php';
+
+$configfiles = scandir(APP_BASE_PATH.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR);
+
+foreach($configfiles as $filename){
+	if(!preg_match("#config.*.php$#", $filename)){
+		continue;
+	}
+
+	$file = ''.APP_BASE_PATH.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.$filename;
+	$vars = include_once $file;
+}
+
 include_once ''.APP_BASE_PATH.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'general.php';
 
 set_error_handler("HandlePHPErrors");
