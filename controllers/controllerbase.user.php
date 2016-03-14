@@ -507,4 +507,13 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 		echo app_json_encode(array("success" => 0));
 		exit;
 	}
+	
+	function _buildUserLink($userid, $additionalClasses = ""){
+		if(!isId($userid)){
+			return "";
+		}
+		
+		$user = getUser($userid);
+		return '<a class="UserLink '.$additionalClasses.'" href="'.$GLOBALS["AppPath"].'/user/view/'.$userid.'">'.$user["username"].'</a>';
+	}
 }
