@@ -123,7 +123,7 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 		<tr>
 			<th>Nombre</th>
 			<th>Apellido</th>
-			<th>%%LNG_USer%%</th>
+			<th>%%LNG_User%%</th>
 			<th>Mail</th>
 			<th>Telefono</th>
 			<th>Estatus</th>
