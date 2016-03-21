@@ -47,6 +47,7 @@ $.getJSON(
 		}
 		else {
 			Vrow.remove();
+			$("#LogId"+Vlogid).remove();
 		}
 	}
 );
