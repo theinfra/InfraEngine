@@ -237,12 +237,21 @@ class APPMODELBASE
 	}
 	
 	public function getResultSet($offset = 0, $amount = 10, $where = array(), $order = array(), $columns = array()){
-		$query = "SELECT";
+			$query = "SELECT";
 		if(!is_array($columns) || empty($columns)){
 			$query .= " *";
 		}
 		else {
-			$query .= " " . implode(',', $columns);
+			$new_columns = array();
+			foreach($columns as $alias => $column){
+				if(is_string($alias)){
+					$new_columns[] = " ".$column." AS '".$alias."'";
+				}
+				else {
+					$new_columns[] = " ".$column;
+				}
+			}
+			$query .= " " . implode(', ', $new_columns);
 		}
 		
 		$query .= " FROM ".$this->tableName;
@@ -309,7 +318,12 @@ class APPMODELBASE
 	public function getSingleResultSet($offset = 0, $amount = 10, $where = array(), $order = array(), $columns = array()){
 		$resultSet = $this->getResultSet($offset, $amount, $where, $order, $columns);
 		
-		return $resultSet[0];
+		if(isset($resultSet[0])){
+			return $resultSet[0];
+		}
+		else {
+			return false;
+		}
 	}
 
 	/**
