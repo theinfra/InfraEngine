@@ -280,6 +280,9 @@ class APPMODELBASE
 				$query = substr($query, 0, strlen($query)-2);
 			}
 		}
+		else if(is_string($order) && trim($order) != ""){
+			$query .= " ORDER BY ".$order;
+		}
 		
 		if ($amount == "*"){
 			$query .= "";
