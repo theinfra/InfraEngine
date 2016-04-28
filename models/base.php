@@ -272,13 +272,12 @@ class APPMODELBASE
 					unset($order[$col]);
 				}
 			}
-			if(!empty($order)){
-				$query .= " ORDER BY ";
-				foreach($order as $col => $dir){
-					$query .= $col . " ".$dir. ", ";
-				}
-				$query = substr($query, 0, strlen($query)-2);
+
+			$query .= " ORDER BY ";
+			foreach($order as $col => $dir){
+				$query .= $col . " ".$dir. ", ";
 			}
+			$query = substr($query, 0, strlen($query)-2);
 		}
 		else if(is_string($order) && trim($order) != ""){
 			$query .= " ORDER BY ".$order;
