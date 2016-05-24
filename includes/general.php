@@ -213,6 +213,23 @@ function redirectRequest(){
 	else {
 		$GLOBALS["TemplateTitle"] = sprintf(GetConfig("TitleTemplate"), $controller->title);
 	}
+	
+	$bc = $controller->getBreadcrumbs();
+	$GLOBALS["BreadcrumbsItems"] = "";
+	if(!empty($bc)){
+		foreach ($bc as $key => $value){
+			if($key == "#"){
+				$GLOBALS["BreadcrumbItemText"] = $value;
+			}
+			else {
+				$GLOBALS["BreadcrumbItemText"] = '<a href="'.$GLOBALS["AppPath"]."/".$key.'">'.$value.'</a>';
+			}
+			
+			$GLOBALS["BreadcrumbsItems"] .= $GLOBALS["APP_CLASS_VIEW"]->GetSnippet("BreadcrumbItem");
+		}
+		
+		$GLOBALS["BreadcrumbsList"] = $GLOBALS["APP_CLASS_VIEW"]->GetSnippet("BreadcrumbsList");
+	}
 
 	$GLOBALS['APP_CLASS_VIEW']->parseView($viewname);
 

@@ -5,6 +5,8 @@ class APP_BASE{
 	
 	public $title = "";
 	
+	public $breadcrumbs = array();
+	
 	function __construct(){
 		if (!isset($_SESSION)) {
 			session_start();
@@ -14,6 +16,10 @@ class APP_BASE{
 	
 	public function getTitle(){
 		return $this->title;
+	}
+	
+	public function getBreadcrumbs(){
+		return $this->breadcrumbs;
 	}
 	
 	public function remote(){
