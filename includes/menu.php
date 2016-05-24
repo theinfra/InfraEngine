@@ -1,6 +1,6 @@
 <?php
 
-function renderMenu($menu_items, $parent){
+function renderMenu($menu_items, $parent, $class = ""){
 	if(is_array($menu_items)){
 		$s = "";
 		foreach($menu_items as $key => $value){
@@ -27,7 +27,7 @@ function renderMenu($menu_items, $parent){
 		}
 		$menu = "<ul";
 		if($parent == "#"){
-			$menu .= " class=\"MainMenuHorizontalMenu\"";
+			$menu .= ' class="'.$class.'"';
 		}
 		$menu .= ">".$s."</ul>";
 		return $menu;

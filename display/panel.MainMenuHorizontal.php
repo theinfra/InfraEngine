@@ -15,7 +15,7 @@ class PANEL_MAINMENUHORIZONTAL extends AppPanel {
 			}
 		}
 		
-		$GLOBALS["MainMenuHorizontal"] = renderMenu($menu_items, "#");
+		$GLOBALS["MainMenuHorizontal"] = renderMenu($menu_items, "#", "MainMenuHorizontalMenu");
 	}
 	
 } 
