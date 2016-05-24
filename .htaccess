@@ -9,3 +9,7 @@ DirectoryIndex index.php index.html index.htm
   RewriteCond %{REQUEST_URI} !=/favicon.ico
   RewriteRule ^ index.php [QSA]
 </IfModule>
+
+<FilesMatch "config.*">
+	Require all denied
+</FilesMatch>
