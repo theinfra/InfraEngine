@@ -184,6 +184,10 @@ function UserHasAccess($url){
 		return false;
 	}
 	
+	if($split[1] == "remote" && isset($_GET["w"]) && trim($_GET["w"]) != "" && isset($controller->menu["remote_".$_GET["w"]])){
+		$split[1] = "remote_".$_GET["w"];
+	}
+	
 	if(/*!method_exists($controller, $split[1]) || */!isset($controller->menu) || !isset($controller->menu[$split[1]])){
 		AddLog(sprintf(GetLang("ErrorAccessControlNoMenu"), $split[1], $split[0]));
 		return false;
