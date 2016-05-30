@@ -1,7 +1,7 @@
 %%Panel.HTMLHead%%
 <body>
 <div id="Container">
-%%Panel.Header%%
+%%Panel.LeftColumn%%
 <div class="WideContent">
 <div class="UserMyDetailsForm">
 <form action="%%GLOBAL_AppPath%%/user/mydetailssubmit" id="UserMyDetailsForm" method="POST">

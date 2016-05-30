@@ -1,7 +1,7 @@
 %%Panel.HTMLHead%%
 <body>
 <div id="Container">
-%%Panel.Header%%
+%%Panel.LeftColumn%%
 <div class="WideContent">
 
 Pagina por omisión
