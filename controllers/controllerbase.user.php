@@ -91,7 +91,7 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 	    	header(sprintf("Location: %s", $page));
 	    }
 	    else {
-	    	header(sprintf("Location: %s/user/", $GLOBALS['AppPath']));
+	    	header(sprintf("Location: %s/", $GLOBALS['AppPath']));
 	    }
 	    
 	    die();
