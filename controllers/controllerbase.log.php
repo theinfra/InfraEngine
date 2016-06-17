@@ -4,7 +4,8 @@ class APPCONTROLLERBASE_LOG extends APP_BASE {
 	
 	public $menu = array(
 		"view" => 3,
-		"remote" => 3,
+		"remote_clearlog" => 3,
+		"remote_deletelog" => 3,
 	);
 	
 	function view(){

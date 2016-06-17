@@ -2,26 +2,32 @@ body
 {
 	margin:0;
 	padding:0;
-	background:#F5F5F5;
+	background: #fff url('images/BodyBg.gif') repeat-x 0 0;
 }
 
 #Container {
-	width: 100%;
+	width: 80%;
 	margin-left: auto;
 	margin-right: auto;	
 }
 
 .Clear {
 	clear: both;
+	height: 0;
+	visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
 }
 
 div.WideContent{
  	display: block;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
+	border-radius: 10px;
 	background-color: #fff;
 	min-height: 400px;
-	height: 100%;
+	margin-top: 5px;
 }
 
 #LoginFormContainer {
@@ -34,17 +40,8 @@ div.WideContent{
 	width: 80%;
 }
 
-.LeftColumn {
-	width: 17vw;
-	float: left;
-}
-
-.LeftColumnLogo {
-	margin: 5px;
-}
-
 .Header {
-	padding-top: 10px;
+	padding-top: 20px;
 }
 
 .HeaderLogo {
@@ -301,53 +298,10 @@ ul.ListPriceCompare li:hover > ul { visibility: visible }
 	margin-top: 80px;
 }
 
-#tabnav, ul.tabnav {
-    height: 20px;
-    padding-left: 10px;
-    background: url(../Styles/images/tab_bottom.gif) repeat-x bottom;
-    margin: 0;
-}
-
-#tabnav li, ul.tabnav li {
-    display: inline;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-#tabnav a:link.active, #tabnav a:visited.active, .tabnav a:link.active, .tabnav a:visited.active {
-    border-bottom: 1px solid #fff;
-    background: #fff;
-    color: #000;
-}
-
-#tabnav a:link, #tabnav a:visited, .tabnav a:link, .tabnav a:visited {
-    float: left;
-    line-height: 14px;
-    font-weight: 700;
-    margin-right: 3px;
-    border: 1px solid #ccc;
-    text-decoration: none;
-    color: #666;
-    background: url(../Styles/images/tab_bg.gif) repeat-x;
-    padding: 2px 5px;
-}
-
-.BreadCrumbsList {
+.ProductsPaging li {
 	list-style: none;
+	float: left;
+	position: relative;
 	margin: 0;
-	padding: 0;
-}
-
-.BreadcrumbItem {
-	font-size: 1em;
-	padding-bottom: 4px;
-	border-bottom: 1px solid #DCDFE2;
-	padding-left: 6px;
-	display: inline;
-}
-
-.BreadcrumbItem a {
-	padding-right: 10px;
-	background: url('../Styles/images/BreadcrumbSep.png') no-repeat right;
+	padding: 5px;
 }

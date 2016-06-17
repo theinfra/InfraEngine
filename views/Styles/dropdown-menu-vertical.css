@@ -4,7 +4,7 @@
     background: #c4c7c8;
     float: left;
     height: 100%;
-    padding: 5px;
+    padding: 5px 0;
 }
 /* Root links */
 .MainMenuVerticalMenu a,
@@ -68,7 +68,7 @@
     left: 100%;
 }
 .MainMenuVerticalMenu li {
-    margin: 0;
+    /*margin: 0;*/
     padding: 0;
     display: inline-block;
     /* IE7 inline-block and padding fix */
@@ -128,7 +128,13 @@ span.dropdown-menu-sub-indicator:before {
 
 /* Vertical-style menu with default width */
 .dropdown-menu-vertical {
-    width: 17vw;
+    width: 100%;
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#c4c7c8+51,f7f7f7+100 */
+background: rgb(196,199,200); /* Old browsers */
+background: -moz-linear-gradient(left,  rgba(196,199,200,1) 51%, rgba(247,247,247,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(left,  rgba(196,199,200,1) 51%,rgba(247,247,247,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to right,  rgba(196,199,200,1) 51%,rgba(247,247,247,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c4c7c8', endColorstr='#f7f7f7',GradientType=1 ); /* IE6-9 */
 }
 .dropdown-menu-vertical li {
     display: block;

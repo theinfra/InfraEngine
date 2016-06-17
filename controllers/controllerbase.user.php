@@ -3,7 +3,7 @@
 class APPCONTROLLERBASE_USER extends APP_BASE {
 	
 	public $menu = array(
-		"remote" => 3,
+		"remote_getusers" => 2,
 		"view" => 1,
 		"login" => 0,
 		"logout" => 0,
@@ -16,8 +16,6 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 		"editsubmit" => 3,
 		"mydetails" => 1,
 		"mydetailssubmit" => 1,
-		"myreserves" => 1,
-		"remote_getusers" => 3,
 	);
 	
 	function view(){
@@ -108,6 +106,7 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 	}
 	
 	function admin(){
+		$this->breadcrumbs = array("user" => GetLang("User"), "#" => GetLang("Admin"));
 		$this->title = GetLang("Users");
 		
 		$users = getModel("user");
@@ -123,7 +122,7 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 		<tr>
 			<th>Nombre</th>
 			<th>Apellido</th>
-			<th>%%LNG_User%%</th>
+			<th>'.GetLang("User").'</th>
 			<th>Mail</th>
 			<th>Telefono</th>
 			<th>Estatus</th>
@@ -156,6 +155,7 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 	}
 	
 	function create(){
+		$this->breadcrumbs = array("user" => GetLang("User"), "#" => GetLang("Create"));
 		$GLOBALS["ViewScripts"] .= '<script src="'.$GLOBALS["AppPath"].'/javascript/jquery-ui-datepicker.min.js"></script>';
 		$GLOBALS["ViewStylesheet"] .= '<link rel="stylesheet" href="'.$GLOBALS["AppPath"].'/views/Styles/jquery-ui-datepicker/jquery-ui-datepicker.min.css">';
 		overwritePostToGlobalVars();
@@ -289,6 +289,8 @@ class APPCONTROLLERBASE_USER extends APP_BASE {
 				'UserNextDateMembership' => date("d/m/Y", $user['nextdatemembership']),
 		);
 		$GLOBALS['UserEditUserId'] = $_GET['userid'];
+		
+		$this->breadcrumbs = array("user" => GetLang("User"), "user/admin" => GetLang("Edit"), "#" => $user["username"]);
 		
 		overwritePostToGlobalVars($data);
 		
