@@ -83,6 +83,13 @@ else {
 	define('APP_EOL', "<br />".PHP_EOL);
 }
 
+if(file_exists(APP_BASE_PATH.DIRECTORY_SEPARATOR."images".DIRECTORY_SEPARATOR."logo-client.png")){
+	$GLOBALS["AppLogoFilename"] = "logo-client.png";
+}
+else {
+	$GLOBALS["AppLogoFilename"] = "logo.png";
+}
+
 header("Content-Type: text/html; charset=" . GetConfig('CharacterSet'));
 if(function_exists("mb_internal_encoding") && trim(GetConfig('CharacterSet')) != "") {
 	mb_internal_encoding(GetConfig('CharacterSet'));

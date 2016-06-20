@@ -40,6 +40,21 @@ div.WideContent{
 	width: 80%;
 }
 
+.LeftColumn {
+	width: 16vw;
+	min-width: 120px;
+	float: left;
+}
+
+.LeftColumnLogo {
+	margin: 5px 0;
+}
+
+.LeftColumnLogo img {
+	width: 14vw;	
+	min-width: 80px;
+}
+
 .Header {
 	padding-top: 20px;
 }

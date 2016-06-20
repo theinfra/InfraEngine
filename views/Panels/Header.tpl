@@ -1,6 +1,6 @@
 <div class="Header">
 	<div class="HeaderLogo">
-		<img src="%%GLOBAL_AppPath%%/views/Styles/images/logo.png" />
+		<img src="%%GLOBAL_AppPath%%/images/%%GLOBAL_AppLogoFilename%%" />
 	</div>
 </div>
 <br class="Clear" />
