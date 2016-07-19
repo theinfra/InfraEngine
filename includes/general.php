@@ -474,7 +474,7 @@ function GetLogTrace($die=false, $return=true){
 	}
 	
 	$backtrace .= "<tr>\n";
-	$backtrace .= "<td colspan=\"3\" style=\"font-size: 11px; padding: 4px; border-bottom: 1px solid #ccc;\">http://{$_SERVER[HTTP_HOST]}{$_SERVER[REQUEST_URI]}</td>\n";
+	$backtrace .= "<td colspan=\"3\" style=\"font-size: 11px; padding: 4px; border-bottom: 1px solid #ccc;\">http://{$_SERVER["HTTP_HOST"]}{$_SERVER["REQUEST_URI"]}</td>\n";
 	$backtrace .= "</tr>\n";
 	
 	$backtrace .= "</tbody></table>\n";
