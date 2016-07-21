@@ -153,6 +153,10 @@ div.WideContent{
 	background: #E637E0 url('images/log_severity5.gif') no-repeat;
 }
 
+.LeftColumnFlashMessages {
+	float: left;
+}
+
 .ProductsTable {
 	width: 100%;
 	border-collapse: collapse;
