@@ -117,39 +117,39 @@ div.WideContent{
 	width: 700px;
 }
 
-.HeaderFlashMessages {
+.FlashMessages {
 	width: 500px;
 	background-color: #FFF;
 	margin-top: 10px;
 }
 
-.HeaderFlashMessages div {
+.FlashMessages div {
 	margin-top: 5px;
 }
 
-.HeaderFlashMessages p {
+.FlashMessages p {
 	width: 90%;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-.SuccessHeaderFlashMessage {
+.SuccessFlashMessage {
 	background: #89F590 url('images/log_severity1.gif') no-repeat;
 }
 
-.ErrorHeaderFlashMessage {
+.ErrorFlashMessage {
 	background: #F59667 url('images/log_severity4.gif') no-repeat;
 }
 
-.WarningHeaderFlashMessage {
+.WarningFlashMessage {
 	background: #E6ED1C url('images/log_severity3.gif') no-repeat;
 }
 
-.NoticeHeaderFlashMessage {
+.NoticeFlashMessage {
 	background: #79C2ED url('images/log_severity2.gif') no-repeat;
 }
 
-.DebugHeaderFlashMessage {
+.DebugFlashMessage {
 	background: #E637E0 url('images/log_severity5.gif') no-repeat;
 }
 

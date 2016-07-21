@@ -12,32 +12,32 @@ class PANEL_HEADERFLASHMESSAGES extends AppPanel {
 		foreach($_SESSION['APP_MESSAGES'] as $msg){
 			switch ($msg['sev']) {
 				case APP_SEVERITY_SUCCESS :
-					$GLOBALS['HeaderFlashMessageType'] = 'Success';
+					$GLOBALS['FlashMessageType'] = 'Success';
 					break;
 				case APP_SEVERITY_ERROR :
-					$GLOBALS['HeaderFlashMessageType'] = 'Error';
+					$GLOBALS['FlashMessageType'] = 'Error';
 					break;
 				case APP_SEVERITY_WARNING :
-					$GLOBALS['HeaderFlashMessageType'] = 'Warning';
+					$GLOBALS['FlashMessageType'] = 'Warning';
 					break;
 				case APP_SEVERITY_NOTICE :
-					$GLOBALS['HeaderFlashMessageType'] = 'Notice';
+					$GLOBALS['FlashMessageType'] = 'Notice';
 					break;
 				case APP_SEVERITY_DEBUG :
-					$GLOBALS['HeaderFlashMessageType'] = 'Debug';
+					$GLOBALS['FlashMessageType'] = 'Debug';
 					break;
 			}
 			
 			if(trim($msg['msg']) == ''){
-				$GLOBALS['HeaderFlashMessageMsg'] = GetLang('ErrorGeneric');
+				$GLOBALS['FlashMessageMsg'] = GetLang('ErrorMsgGeneric');
 			}
 			else {
-				$GLOBALS['HeaderFlashMessageMsg'] = $msg['msg'];
+				$GLOBALS['FlashMessageMsg'] = $msg['msg'];
 			}
-			$panel .= $GLOBALS['APP_CLASS_VIEW']->GetSnippet('HeaderFlashMessage');
+			$panel .= $GLOBALS['APP_CLASS_VIEW']->GetSnippet('FlashMessage');
 		}
 		
-		$GLOBALS['HeaderFlashMessagesContent'] = $panel;
+		$GLOBALS['FlashMessagesContent'] = $panel;
 		$_SESSION['APP_MESSAGES'] = array();
 	}
 }

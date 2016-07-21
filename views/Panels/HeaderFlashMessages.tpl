@@ -1,3 +1,3 @@
 <div id="HeaderFlashMessages" class="HeaderFlashMessages">
-%%GLOBAL_HeaderFlashMessagesContent%%
+%%GLOBAL_FlashMessagesContent%%
 </div>

@@ -4,4 +4,4 @@
 	</div>
 	%%Panel.MainMenuVertical%%
 </div>
-%%Panel.HeaderFlashMessages%%
+%%Panel.LeftColumnFlashMessages%%
