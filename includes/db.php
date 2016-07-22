@@ -59,6 +59,8 @@ class Db {
 			return false;
 		}
 		$this->connection = &$connection_result;
+		
+		mysql_set_charset('utf8',$this->connection);
 	
 		$db_result = @mysql_select_db($databasename, $connection_result);
 		if (!$db_result) {
@@ -849,5 +851,20 @@ class Db {
 		
 		return true;
 	}
-	
+
+	public function getResultAsArray($query, $index_column = ""){
+		$result = $this->Query($query);
+		
+		$return = array();
+		while($row = $this->Fetch($result)){
+			if(trim($index_column) != "" && array_key_exists($index_column, $row)){
+				$return[$row[$index_column]] = $row;
+			}
+			else{
+				$return[] = $row;
+			}
+		}
+		
+		return $return;
+	}
 }
